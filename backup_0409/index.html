@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中油偵測報告系統</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #0F172A;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --accent-blue: #3B82F6;
+            --border-color: #E2E8F0;
+            --bg-light: #F8FAFC;
+            --success: #10B981;
+            --warning: #F59E0B;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 24px 32px;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-title .highlight {
+            color: var(--accent-blue);
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        .month-section {
+            margin-bottom: 32px;
+        }
+        .month-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .date-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+        .date-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+        .date-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .date-day {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+        .date-weekday {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .category-name {
+            color: var(--text-dark);
+            font-size: 16px;
+        }
+        .category-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .category-links a {
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+        .link-review {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #9CA3AF;
+            background: transparent;
+        }
+        .link-review:hover {
+            color: #6B7280;
+            background: #F3F4F6;
+        }
+        .link-report {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #059669;
+            color: white;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+        }
+        .link-report:hover {
+            background: #047857;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+            transform: translateY(-1px);
+        }
+        .link-report.disabled {
+            background: #D1D5DB;
+            color: #9CA3AF;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .link-report.disabled:hover {
+            background: #D1D5DB;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 32px;
+            color: var(--text-secondary);
+        }
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-title">
+                <span class="highlight">中油</span> 偵測報告系統
+            </div>
+            <div style="font-size: 14px; color: var(--text-secondary);">
+                iSeek AI 影像辨識
+            </div>
+        </div>
+    </header>
+
+    <main class="main" id="main">
+    </main>
+
+    <footer class="footer">
+        iSeek AI 影像辨識系統 — 工安監控平台
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'http://192.168.53.96:8001/api/v1';
+        const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
+        let REPORT_DATA = [];  // 從 API 載入
+
+        async function loadDataFromAPI() {
+            try {
+                // 取得所有有資料的日期列表
+                const response = await fetch(`${API_BASE_URL}/stats/dates?year=2026`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    // 轉換為原有的格式
+                    REPORT_DATA = result.data.map(item => {
+                        const [year, month, day] = item.date.split('-');
+                        const reviewPath = `2026/${month}/${day}/${item.category}_審核.html`;
+                        const reportPath = `2026/${month}/${day}/${item.category}_報告_管理版.html`;
+
+                        return {
+                            date: item.date,
+                            category: item.category,
+                            reviewPath: reviewPath,
+                            reportPath: reportPath,
+                            reviewed: item.reviewed,
+                            total_items: item.total_items,
+                            confirmed_count: item.confirmed_count,
+                            pending_count: item.pending_count,
+                            deleted_count: item.deleted_count
+                        };
+                    });
+
+                    console.log(`✓ 從 API 載入 ${REPORT_DATA.length} 筆資料`);
+                    render();
+                } else {
+                    console.error('API 回應格式錯誤');
+                    showError('資料載入失敗');
+                }
+            } catch (error) {
+                console.error('API 載入失敗:', error);
+                showError('無法連接伺服器');
+            }
+        }
+
+        function checkReportAccess(reportKey, category, hasConfirmed) {
+            // 如果資料庫有已確認的項目，就允許查看
+            if (hasConfirmed) {
+                return true;
+            }
+
+            // 降級檢查 localStorage
+            const hasData = localStorage.getItem(reportKey);
+            if (!hasData) {
+                alert('請先完成「' + category + '」的審核作業，\n確認至少一筆違規後才能檢視報告。');
+                return false;
+            }
+            return true;
+        }
+
+        function showError(message) {
+            document.getElementById('main').innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: #EF4444;">
+                        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <h3>${message}</h3>
+                    <button onclick="location.reload()" style="margin-top: 16px; padding: 10px 20px; background: #3B82F6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                        重新載入
+                    </button>
+                </div>`;
+        }
+
+        function render() {
+            if (!REPORT_DATA || REPORT_DATA.length === 0) {
+                document.getElementById('main').innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        <h3>尚無偵測報告</h3>
+                        <p>執行 generate_daily_review.py 產生審核工具</p>
+                    </div>`;
+                return;
+            }
+
+            // 依月份分組
+            const byMonth = {};
+            REPORT_DATA.forEach(r => {
+                const key = r.date.substring(0, 7);
+                if (!byMonth[key]) byMonth[key] = [];
+                byMonth[key].push(r);
+            });
+
+            let html = '';
+            const sortedMonths = Object.keys(byMonth).sort().reverse();
+
+            sortedMonths.forEach(month => {
+                const [year, mon] = month.split('-');
+                html += `<div class="month-section">
+                    <div class="month-title">${year} 年 ${parseInt(mon)} 月</div>
+                    <div class="date-grid">`;
+
+                const dateMap = {};
+                byMonth[month].forEach(r => {
+                    if (!dateMap[r.date]) dateMap[r.date] = [];
+                    dateMap[r.date].push(r);
+                });
+
+                Object.keys(dateMap).sort().reverse().forEach(date => {
+                    const items = dateMap[date];
+                    const d = new Date(date);
+                    const day = d.getDate();
+                    const weekday = WEEKDAYS[d.getDay()];
+
+                    html += `<div class="date-card">
+                        <div class="date-header">
+                            <div>
+                                <div class="date-day">${day}</div>
+                                <div class="date-weekday">星期${weekday}</div>
+                            </div>
+                        </div>
+                        <div class="category-list">`;
+
+                    items.forEach(item => {
+                        const reportKey = 'reportData_' + item.date + '_' + item.category;
+                        const hasConfirmed = item.confirmed_count > 0;
+
+                        // 審核進度標籤
+                        let statusBadge = '';
+                        if (item.pending_count > 0) {
+                            statusBadge = `<span style="font-size: 11px; color: #F59E0B; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">待審 ${item.pending_count}</span>`;
+                        } else if (item.confirmed_count > 0) {
+                            statusBadge = `<span style="font-size: 11px; color: #10B981; background: #D1FAE5; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">✓ ${item.confirmed_count}</span>`;
+                        }
+
+                        html += `<div class="category-item">
+                            <span class="category-name">${item.category}${statusBadge}</span>
+                            <div class="category-links">
+                                <a href="${item.reviewPath}" class="link-review">審核</a>
+                                ${item.reportPath ? `<a href="${item.reportPath}" class="link-report${hasConfirmed ? '' : ' disabled'}" onclick="return checkReportAccess('${reportKey}', '${item.category}', ${hasConfirmed})">報告</a>` : ''}
+                            </div>
+                        </div>`;
+                    });
+
+                    html += `</div></div>`;
+                });
+
+                html += '</div></div>';
+            });
+
+            document.getElementById('main').innerHTML = html;
+        }
+
+        // 頁面載入時從 API 載入資料
+        window.addEventListener('load', loadDataFromAPI);
+    </script>
+</body>
+</html>

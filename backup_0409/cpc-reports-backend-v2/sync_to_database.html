@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同步 localStorage 到資料庫</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-green { background: #dcfce7; color: #16a34a; }
+        .badge-yellow { background: #fef3c7; color: #d97706; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+
+        .data-list {
+            font-size: 14px;
+            color: #475569;
+        }
+        .data-item {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .data-item .info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .data-item .date {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .data-item .stats {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .data-item .status {
+            font-size: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        .btn-primary:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .btn-outline {
+            background: white;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            background: #f8fafc;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .log {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .log .success { color: #4ade80; }
+        .log .error { color: #f87171; }
+        .log .info { color: #60a5fa; }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+        }
+
+        .progress {
+            margin-top: 16px;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s;
+        }
+        .progress-text {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>同步 localStorage 到資料庫</h1>
+        <p class="subtitle">將此瀏覽器的審核資料上傳到伺服器資料庫</p>
+
+        <div class="card">
+            <div class="card-title">
+                找到的審核資料
+                <span class="badge badge-blue" id="total-badge">載入中...</span>
+            </div>
+            <div class="data-list" id="data-list">
+                <div class="empty">掃描中...</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">同步進度</div>
+            <div class="log" id="log">等待開始同步...</div>
+            <div class="progress" id="progress" style="display:none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0%</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="sync-btn" onclick="startSync()">
+                開始同步到資料庫
+            </button>
+            <button class="btn btn-outline" onclick="location.reload()">
+                重新掃描
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://192.168.53.96:8001/api/v1';
+        let foundData = [];
+
+        // 掃描 localStorage 找出所有審核資料
+        function scanLocalStorage() {
+            foundData = [];
+            const reportPattern = /^reportData_(\d{4}-\d{2}-\d{2})_(.+)$/;
+            const reviewPattern = /^reviewState_(\d{4}-\d{2}-\d{2})_(.+)$/;
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+
+                // 檢查 reportData
+                let match = key.match(reportPattern);
+                if (match) {
+                    const [, date, category] = match;
+                    if (category.endsWith('_pending')) continue; // 跳過待分類
+
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data && data.items && data.items.length > 0) {
+                            foundData.push({
+                                type: 'report',
+                                key: key,
+                                date: date,
+                                category: category,
+                                items: data.items,
+                                confirmedCount: data.items.length
+                            });
+                        }
+                    } catch (e) {}
+                }
+
+                // 檢查 reviewState
+                match = key.match(reviewPattern);
+                if (match) {
+                    const [, date, category] = match;
+
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data) {
+                            const confirmed = data.confirmed || [];
+                            const deleted = data.deleted || [];
+                            const notes = data.notes || {};
+
+                            if (confirmed.length > 0 || deleted.length > 0) {
+                                // 檢查是否已經有對應的 reportData
+                                const existingReport = foundData.find(d =>
+                                    d.date === date && d.category === category && d.type === 'report'
+                                );
+
+                                if (!existingReport) {
+                                    foundData.push({
+                                        type: 'review',
+                                        key: key,
+                                        date: date,
+                                        category: category,
+                                        confirmed: confirmed,
+                                        deleted: deleted,
+                                        notes: notes,
+                                        confirmedCount: confirmed.length,
+                                        deletedCount: deleted.length
+                                    });
+                                } else {
+                                    // 合併 notes 到現有的 report
+                                    existingReport.notes = notes;
+                                    existingReport.deleted = deleted;
+                                    existingReport.deletedCount = deleted.length;
+                                }
+                            }
+                        }
+                    } catch (e) {}
+                }
+            }
+
+            // 按日期排序
+            foundData.sort((a, b) => b.date.localeCompare(a.date));
+
+            renderDataList();
+        }
+
+        function renderDataList() {
+            const container = document.getElementById('data-list');
+            const badge = document.getElementById('total-badge');
+
+            if (foundData.length === 0) {
+                container.innerHTML = '<div class="empty">沒有找到任何審核資料</div>';
+                badge.textContent = '0 筆';
+                document.getElementById('sync-btn').disabled = true;
+                return;
+            }
+
+            badge.textContent = foundData.length + ' 筆';
+
+            container.innerHTML = foundData.map((d, idx) => `
+                <div class="data-item" id="item-${idx}">
+                    <div class="info">
+                        <div class="date">${d.date} ${d.category}</div>
+                        <div class="stats">
+                            確認: ${d.confirmedCount || 0} 筆
+                            ${d.deletedCount ? ', 刪除: ' + d.deletedCount + ' 筆' : ''}
+                            ${d.notes && Object.keys(d.notes).length > 0 ? ', 備註: ' + Object.keys(d.notes).length + ' 筆' : ''}
+                        </div>
+                    </div>
+                    <div class="status" id="status-${idx}">
+                        <span class="badge badge-yellow">待同步</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function log(msg, type = '') {
+            const logEl = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            logEl.innerHTML += `<span class="${type}">[${time}] ${msg}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function updateProgress(current, total) {
+            const pct = Math.round((current / total) * 100);
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('progress-text').textContent = `${current} / ${total} (${pct}%)`;
+        }
+
+        async function startSync() {
+            const btn = document.getElementById('sync-btn');
+            btn.disabled = true;
+            btn.textContent = '同步中...';
+
+            document.getElementById('progress').style.display = 'block';
+            document.getElementById('log').innerHTML = '';
+
+            log('開始同步...', 'info');
+
+            let success = 0;
+            let failed = 0;
+
+            for (let i = 0; i < foundData.length; i++) {
+                const d = foundData[i];
+                updateProgress(i, foundData.length);
+
+                const statusEl = document.getElementById('status-' + i);
+                statusEl.innerHTML = '<span class="badge badge-blue">同步中...</span>';
+
+                try {
+                    const actions = [];
+
+                    if (d.type === 'report' && d.items) {
+                        // 從 reportData 提取
+                        d.items.forEach(item => {
+                            actions.push({
+                                detection_log_id: item.id,
+                                action: 'confirmed',
+                                note: item.note || (d.notes && d.notes[item.id]) || null
+                            });
+                        });
+
+                        // 加入刪除的項目
+                        if (d.deleted) {
+                            d.deleted.forEach(id => {
+                                actions.push({
+                                    detection_log_id: id,
+                                    action: 'deleted',
+                                    note: null
+                                });
+                            });
+                        }
+                    } else if (d.type === 'review') {
+                        // 從 reviewState 提取
+                        d.confirmed.forEach(id => {
+                            actions.push({
+                                detection_log_id: id,
+                                action: 'confirmed',
+                                note: d.notes[id] || null
+                            });
+                        });
+
+                        d.deleted.forEach(id => {
+                            actions.push({
+                                detection_log_id: id,
+                                action: 'deleted',
+                                note: null
+                            });
+                        });
+                    }
+
+                    if (actions.length === 0) {
+                        log(`${d.date} ${d.category}: 沒有資料需要同步`, 'info');
+                        statusEl.innerHTML = '<span class="badge badge-yellow">無資料</span>';
+                        continue;
+                    }
+
+                    log(`${d.date} ${d.category}: 同步 ${actions.length} 筆...`);
+
+                    const response = await fetch(API_BASE + '/reviews/actions/bulk', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            date: d.date,
+                            category: d.category,
+                            actions: actions,
+                            reviewer_ip: 'sync_tool'
+                        })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        log(`${d.date} ${d.category}: 成功! 確認 ${result.data.confirmed_count}, 刪除 ${result.data.deleted_count}`, 'success');
+                        statusEl.innerHTML = '<span class="badge badge-green">已同步</span>';
+                        success++;
+                    } else {
+                        throw new Error('HTTP ' + response.status);
+                    }
+                } catch (err) {
+                    log(`${d.date} ${d.category}: 失敗 - ${err.message}`, 'error');
+                    statusEl.innerHTML = '<span class="badge badge-red">失敗</span>';
+                    failed++;
+                }
+
+                // 小延遲避免過快
+                await new Promise(r => setTimeout(r, 200));
+            }
+
+            updateProgress(foundData.length, foundData.length);
+
+            log('', '');
+            log(`=== 同步完成 ===`, 'info');
+            log(`成功: ${success}, 失敗: ${failed}`, success > 0 ? 'success' : 'error');
+
+            btn.textContent = '同步完成';
+        }
+
+        // 頁面載入時掃描
+        window.onload = scanLocalStorage;
+    </script>
+</body>
+</html>
