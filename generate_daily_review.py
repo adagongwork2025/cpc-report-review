@@ -16,22 +16,22 @@ API_URL = 'https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/filte
 BASE_DIR = Path('/Users/ada/Documents/C.客製化/3.中油/2026/需通報列表/cpc通報查詢')
 
 # Camera ID 設定
-CAMERA_IDS = ['758', '837']  # 758=高處作業, 837=局限空間
+CAMERA_IDS = ['758', '837', '867']  # 758=高處作業, 837=局限空間人員, 867=局限空間物件
 
 # 類別分類規則
 CATEGORIES = {
     '高處作業': {
-        'camera_id': '758',
+        'camera_id': ['758'],
         'types': ['hooked', 'harness'],
         'display_types': ['已掛鉤', '背負式安全帶']
     },
     '局限空間': {
-        'camera_id': '837',
+        'camera_id': ['837', '867'],  # 837=人員, 867=物件
         'types': ['No_rescue_tripod', 'No_venturi_tube', 'No_air_breathing_apparatus_cylinder', 'No_notice_board', 'No_fire_extinguisher', 'heartbeat', 'harness', 'confined_person', 'confined_space', 'equipment_missing'],
         'display_types': ['無救援三腳架', '無文氏管', '無空氣呼吸器鋼瓶', '無告示牌', '無滅火器', '生命偵測器', '未穿戴安全帶', '局限人員安全', '局限空間場域安全', '設備缺失']
     },
     '待分類': {
-        'camera_id': None,  # 任何 camera 都可能有
+        'camera_id': [],  # 任何 camera 都可能有
         'types': ['no_hardhat', 'no_safety_vest'],
         'display_types': ['未戴安全帽', '未穿安全背心']
     }
@@ -50,8 +50,8 @@ def fetch_api_data(date_str, camera_id):
 
     while True:
         payload = {
-            "start_time": f"{date_str}T00:00:00",
-            "end_time": f"{date_str}T23:59:59",
+            "start_time": f"{date_str}T08:00:00",
+            "end_time": f"{date_str}T13:30:00",
             "camera_id": camera_id,
             "per_page": per_page,
             "page": page
@@ -100,9 +100,10 @@ def categorize_logs(logs):
         camera_id = str(log.get('camera_id', ''))
         categorized_flag = False
 
-        # 優先依 camera_id 分類
+        # 優先依 camera_id 分類（支援列表）
         for cat, config in CATEGORIES.items():
-            if config.get('camera_id') and camera_id == config['camera_id']:
+            cam_ids = config.get('camera_id', [])
+            if cam_ids and camera_id in cam_ids:
                 categorized[cat].append(log)
                 categorized_flag = True
                 break
@@ -221,7 +222,7 @@ def consolidate_confined_space_logs(logs):
             for (existing_id, group_time), group_logs in person_groups.items():
                 if existing_id == person_id:
                     time_diff = abs(log_time - group_time)
-                    if time_diff <= timedelta(minutes=30):
+                    if time_diff <= timedelta(seconds=0):
                         group_logs.append(log)
                         found_group = True
                         break
@@ -3561,12 +3562,13 @@ def main():
             if not person_ids:
                 person_ids = str(log.get('person_ids', ''))
 
-            # 跳過已出現過的 ID
-            if person_ids and person_ids in seen_ids:
-                skipped_count += 1
-                continue
-            if person_ids:
-                seen_ids.add(person_ids)
+            # 跳過已出現過的 ID（高處作業不去重）
+            if category != '高處作業':
+                if person_ids and person_ids in seen_ids:
+                    skipped_count += 1
+                    continue
+                if person_ids:
+                    seen_ids.add(person_ids)
 
             time_str = log.get('time', '')
             time_display = ''

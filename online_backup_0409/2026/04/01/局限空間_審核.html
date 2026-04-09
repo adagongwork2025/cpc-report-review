@@ -245,9 +245,6 @@
                     });
 
                     console.log('✓ 從 API 載入 ' + REPORT_DATA.length + ' 筆資料');
-                    // 手動加入 4/8 資料
-                    REPORT_DATA.push({date: "2026-04-08", category: "高處作業", reviewPath: "2026/04/08/高處作業_審核.html", reportPath: "2026/04/08/高處作業_報告_管理版.html", confirmed_count: 0, total_items: 103, pending_count: 0, reviewed: true});
-                    REPORT_DATA.push({date: "2026-04-08", category: "局限空間", reviewPath: "2026/04/08/局限空間_審核.html", reportPath: "2026/04/08/局限空間_報告_管理版.html", confirmed_count: 2, total_items: 9, pending_count: 9});
                     render();
                 } else {
                     showError('資料載入失敗');
@@ -323,7 +320,7 @@
                         <div class="category-list">`;
 
                     items.forEach(item => {
-                        const hasConfirmed = item.confirmed_count > 0 || item.reviewed || (item.pending_count === 0 && item.total_items > 0);
+                        const hasConfirmed = item.confirmed_count > 0;
 
                         // 狀態標籤
                         let statusBadge = '';
