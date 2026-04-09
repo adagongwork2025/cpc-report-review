@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局限空間 違規審核 - 2026-04-02</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #0F172A;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --accent-blue: #3B82F6;
+            --border-color: #E2E8F0;
+            --bg-light: #F8FAFC;
+            --success: #10B981;
+            --success-bg: #ECFDF5;
+            --error: #EF4444;
+            --error-bg: #FEF2F2;
+            --warning: #F59E0B;
+            --warning-bg: #FFFBEB;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: var(--text-dark);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: #FFFFFF;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .header-title .highlight {
+            color: var(--accent-blue);
+        }
+        .header-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .meta-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--border-color);
+        }
+
+        .stats-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-light);
+        }
+        .stat-box.pending { background: var(--warning-bg); }
+        .stat-box.success { background: var(--success-bg); }
+        .stat-box.error { background: var(--error-bg); }
+        .stat-num {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .stat-box.pending .stat-num { color: var(--warning); }
+        .stat-box.success .stat-num { color: var(--success); }
+        .stat-box.error .stat-num { color: var(--error); }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-dark {
+            background: var(--text-dark);
+            color: white;
+        }
+        .btn-dark:hover {
+            background: #1E293B;
+        }
+        .btn-outline {
+            background: white;
+            color: var(--text-dark);
+            border: 1.5px solid var(--border-color);
+        }
+        .btn-outline:hover {
+            border-color: var(--text-secondary);
+            background: var(--bg-light);
+        }
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+        .btn-confirm {
+            background: white;
+            color: var(--success);
+            border: 1.5px solid var(--success);
+        }
+        .btn-confirm:hover {
+            background: var(--success-bg);
+        }
+        .btn-confirm.confirmed {
+            background: var(--success);
+            color: white;
+        }
+        .btn-delete {
+            background: white;
+            color: var(--error);
+            border: 1.5px solid var(--error);
+        }
+        .btn-delete:hover {
+            background: var(--error-bg);
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+            padding-top: 100px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+        .card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+            transform: translateY(-4px);
+        }
+        .card.removing {
+            animation: fadeOut 0.3s ease forwards;
+        }
+        .card.confirmed {
+            border-color: var(--success);
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.96); }
+        }
+
+        .card-media {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: #0F172A;
+            overflow: hidden;
+        }
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .card:hover .card-media img {
+            transform: scale(1.05);
+        }
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-dark);
+            margin-left: 4px;
+        }
+        .confirmed-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: none;
+        }
+        .card.confirmed .confirmed-badge {
+            display: block;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+        .card-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--warning-bg);
+            color: var(--warning);
+            word-break: keep-all;
+        }
+        .card-info {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .card-note {
+            margin-bottom: 12px;
+        }
+        .note-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            background: var(--bg-light);
+            transition: border-color 0.2s;
+        }
+        .note-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: #fff;
+        }
+        .note-input::placeholder {
+            color: var(--text-muted);
+        }
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .card-actions .btn {
+            flex: 1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 32px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: var(--bg-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .modal-video {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            background: #000;
+            min-height: 300px;
+        }
+        .modal-video::-webkit-media-controls-panel {
+            background: linear-gradient(transparent, rgba(0,0,0,0.7)) !important;
+        }
+        .modal-info {
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-color);
+        }
+        .modal-actions .btn {
+            flex: 1;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .confirm-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .confirm-item-thumb {
+            width: 80px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .confirm-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .confirm-item-mesg {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .confirm-item-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .confirm-item-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+        .confirm-item-remove:hover {
+            background: var(--error-bg);
+            color: var(--error);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="header-title">
+                    <span class="highlight">局限空間</span> 違規審核
+                </div>
+                <div class="header-meta">
+                    <span>2026-04-02</span>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-box pending">
+                    <span class="stat-num" id="pending-count">3</span>
+                    <span class="stat-label">待審核</span>
+                </div>
+                <div class="stat-box success">
+                    <span class="stat-num" id="confirmed-count">0</span>
+                    <span class="stat-label">已確認</span>
+                </div>
+                <div class="stat-box error">
+                    <span class="stat-num" id="deleted-count">0</span>
+                    <span class="stat-label">已刪除</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-outline" onclick="window.location.href='../../../index.html'">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    返回列表
+                </button>
+                <button class="btn btn-dark" onclick="generateReport()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    偵測報告
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="grid" id="grid">
+
+            
+            <div class="card" data-id="700000" id="card-700000">
+                <div class="card-media">
+                    <img src="ID21_thumbnail.jpg" alt="預覽圖" id="thumb-700000">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/865_%E5%85%A8%E6%94%9D%E5%BD%B1%E6%A9%9F%E5%8D%80%E5%9F%9F_161716333.mp4" id="video-700000" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(700000)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                    <div class="confirmed-badge">✓ 已確認</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">缺少生命偵測器 ID:21</div>
+                        <div class="card-tag">缺少生命偵測器</div>
+                    </div>
+                    <div class="card-info">
+                        <span>09:04:55</span>
+                        <span>ID: 21</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-700000" placeholder="備註..." onchange="saveNote(700000, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-700000" onclick="confirmCard(700000)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(700000)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="731859" id="card-731859">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_118094_143622872.jpg" alt="預覽圖" id="thumb-731859">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_143622883.mp4" id="video-731859" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(731859)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                    <div class="confirmed-badge">✓ 已確認</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">缺少生命偵測器 ID:267</div>
+                        <div class="card-tag">缺少生命偵測器</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:36:21</span>
+                        <span>ID: 267</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-731859" placeholder="備註..." onchange="saveNote(731859, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-731859" onclick="confirmCard(731859)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(731859)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="732532" id="card-732532">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125578_151354074.jpg" alt="預覽圖" id="thumb-732532">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151354088.mp4" id="video-732532" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(732532)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                    <div class="confirmed-badge">✓ 已確認</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">缺少生命偵測器 ID:417</div>
+                        <div class="card-tag">缺少生命偵測器</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:13:53</span>
+                        <span>ID: 417</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-732532" placeholder="備註..." onchange="saveNote(732532, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-732532" onclick="confirmCard(732532)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(732532)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="732540" id="card-732540">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125640_151405703.jpg" alt="預覽圖" id="thumb-732540">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151405716.mp4" id="video-732540" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(732540)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                    <div class="confirmed-badge">✓ 已確認</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">缺少生命偵測器 ID:425</div>
+                        <div class="card-tag">缺少生命偵測器</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:14:05</span>
+                        <span>ID: 425</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-732540" placeholder="備註..." onchange="saveNote(732540, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-732540" onclick="confirmCard(732540)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(732540)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">違規詳情</div>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video class="modal-video" id="modal-video" controls crossorigin="anonymous" playsinline></video>
+                <div class="modal-info" id="modal-info"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-confirm" id="modal-btn-confirm" onclick="modalConfirm()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    確認違規
+                </button>
+                <button class="btn btn-delete" id="modal-btn-delete" onclick="modalDelete()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    誤報刪除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 確認列表 Modal -->
+    <div class="modal-overlay" id="confirm-modal" onclick="closeConfirmModal(event)">
+        <div class="modal" style="max-width:700px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">已確認違規列表</div>
+                <button class="modal-close" onclick="closeConfirmModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height:60vh;overflow-y:auto;">
+                <div id="confirm-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeConfirmModal()">取消</button>
+                <button class="btn btn-dark" onclick="proceedToReport()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    產生報告
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        iSeek AI 影像辨識系統 — 局限空間安全監控
+    </footer>
+
+    <script>
+        const DATA = [{"id": 700000, "time": "2026-04-02T09:04:55.000000", "time_display": "09:04:55", "mesg": "缺少生命偵測器 ID:21", "type": "heartbeat", "person_ids": "21", "image_url": "ID21_thumbnail.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/865_%E5%85%A8%E6%94%9D%E5%BD%B1%E6%A9%9F%E5%8D%80%E5%9F%9F_161716333.mp4"}, {"id": 731859, "time": "2026-04-02T14:36:21.756222", "time_display": "14:36:21", "mesg": "缺少生命偵測器 ID:267", "type": "heartbeat", "person_ids": "267", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_118094_143622872.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_143622883.mp4"}, {"id": 732532, "time": "2026-04-02T15:13:53.702930", "time_display": "15:13:53", "mesg": "缺少生命偵測器 ID:417", "type": "heartbeat", "person_ids": "417", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125578_151354074.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151354088.mp4"}, {"id": 732540, "time": "2026-04-02T15:14:05.575127", "time_display": "15:14:05", "mesg": "缺少生命偵測器 ID:425", "type": "heartbeat", "person_ids": "425", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125640_151405703.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151405716.mp4"}];
+        const DATE = '2026-04-02';
+        const CATEGORY = '局限空間';
+        const REPORT_PATH = '局限空間_報告.html';
+        const PRESET_TIMES = [];  // 預設確認的時間列表
+
+        let confirmedIds = new Set();
+        let deletedIds = new Set();
+        let currentModalId = null;
+        let notes = {};  // 備註資料 {id: note}
+
+        const STORAGE_KEY = 'reviewState_' + DATE + '_' + CATEGORY;
+
+        // 儲存審核狀態
+        function saveState() {
+            const state = {
+                confirmed: Array.from(confirmedIds),
+                deleted: Array.from(deletedIds),
+                notes: notes
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        // 載入審核狀態
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            let stateLoaded = false;
+
+            if (saved) {
+                const state = JSON.parse(saved);
+                // 載入確認狀態
+                if (state.confirmed && state.confirmed.length > 0) {
+                    state.confirmed.forEach(id => {
+                        confirmedIds.add(id);
+                        const card = document.getElementById('card-' + id);
+                        const btn = document.getElementById('btn-confirm-' + id);
+                        if (card && btn) {
+                            card.classList.add('confirmed');
+                            btn.classList.add('confirmed');
+                            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+                            stateLoaded = true;
+                        }
+                    });
+                }
+                // 載入刪除狀態
+                if (state.deleted && state.deleted.length > 0) {
+                    state.deleted.forEach(id => {
+                        deletedIds.add(id);
+                        const card = document.getElementById('card-' + id);
+                        if (card) {
+                            card.style.display = 'none';
+                            stateLoaded = true;
+                        }
+                    });
+                }
+                // 載入備註
+                if (state.notes) {
+                    notes = state.notes;
+                    Object.keys(notes).forEach(id => {
+                        const input = document.getElementById('note-' + id);
+                        if (input && notes[id]) {
+                            input.value = notes[id];
+                        }
+                    });
+                }
+            }
+
+            // 如果審核狀態無法匹配，檢查是否有預設確認時間
+            if (!stateLoaded && PRESET_TIMES && PRESET_TIMES.length > 0) {
+                const presetSet = new Set(PRESET_TIMES);
+
+                // 標記預設確認的項目，其餘標記為已刪除
+                DATA.forEach(d => {
+                    if (presetSet.has(d.time_display)) {
+                        confirmedIds.add(d.id);
+                        const card = document.getElementById('card-' + d.id);
+                        const btn = document.getElementById('btn-confirm-' + d.id);
+                        if (card && btn) {
+                            card.classList.add('confirmed');
+                            btn.classList.add('confirmed');
+                            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+                        }
+                    } else {
+                        deletedIds.add(d.id);
+                        const card = document.getElementById('card-' + d.id);
+                        if (card) {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+
+                // 儲存預設狀態
+                saveState();
+                console.log('已載入預設確認 ' + confirmedIds.size + ' 筆');
+                stateLoaded = true;
+            }
+
+            // 如果還是沒有，嘗試從報告資料恢復
+            if (!stateLoaded) {
+                const reportKey = 'reportData_' + DATE + '_' + CATEGORY;
+                const reportData = JSON.parse(localStorage.getItem(reportKey) || '{}');
+                if (reportData.items && reportData.items.length > 0) {
+                    // 用時間+訊息建立已確認項目的 key
+                    const confirmedKeys = new Set(reportData.items.map(item =>
+                        item.time_display + '|' + item.mesg
+                    ));
+
+                    // 標記已確認的項目，其餘標記為已刪除
+                    DATA.forEach(d => {
+                        const key = d.time_display + '|' + d.mesg;
+                        if (confirmedKeys.has(key)) {
+                            confirmedIds.add(d.id);
+                            const card = document.getElementById('card-' + d.id);
+                            const btn = document.getElementById('btn-confirm-' + d.id);
+                            if (card && btn) {
+                                card.classList.add('confirmed');
+                                btn.classList.add('confirmed');
+                                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+                            }
+                        } else {
+                            deletedIds.add(d.id);
+                            const card = document.getElementById('card-' + d.id);
+                            if (card) {
+                                card.style.display = 'none';
+                            }
+                        }
+                    });
+
+                    // 儲存恢復的狀態
+                    saveState();
+                    console.log('已從報告資料恢復 ' + confirmedIds.size + ' 筆已確認項目');
+                }
+            }
+
+            updateStats();
+        }
+
+        // 儲存備註
+        function saveNote(id, value) {
+            notes[id] = value;
+            saveState();
+        }
+
+        // 頁面載入時載入狀態
+        window.addEventListener('load', loadState);
+
+        function updateStats() {
+            const pending = DATA.length - confirmedIds.size - deletedIds.size;
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('confirmed-count').textContent = confirmedIds.size;
+            document.getElementById('deleted-count').textContent = deletedIds.size;
+        }
+
+        function confirmCard(id) {
+            const card = document.getElementById('card-' + id);
+            const btn = document.getElementById('btn-confirm-' + id);
+            if (confirmedIds.has(id)) {
+                confirmedIds.delete(id);
+                card.classList.remove('confirmed');
+                btn.classList.remove('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 確認違規';
+            } else {
+                confirmedIds.add(id);
+                card.classList.add('confirmed');
+                btn.classList.add('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+            }
+            updateStats();
+            saveState();  // 儲存狀態
+        }
+
+        function deleteCard(id) {
+            const card = document.getElementById('card-' + id);
+            card.classList.add('removing');
+            setTimeout(() => {
+                card.style.display = 'none';
+                deletedIds.add(id);
+                confirmedIds.delete(id);
+                updateStats();
+                saveState();  // 儲存狀態
+            }, 300);
+        }
+
+        function playVideo(id) {
+            currentModalId = id;
+            const d = DATA.find(item => item.id === id);
+            const modal = document.getElementById('modal');
+            const video = document.getElementById('modal-video');
+            const title = document.getElementById('modal-title');
+            const info = document.getElementById('modal-info');
+
+            video.src = d.video_url;
+            title.textContent = d.mesg;
+            info.innerHTML = `時間：${d.time_display} | ID：${d.person_ids}`;
+
+            modal.classList.add('active');
+            video.load();
+            video.play().catch(e => console.log('Auto-play blocked:', e));
+            updateModalButtons();
+        }
+
+        function closeModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            const modal = document.getElementById('modal');
+            const video = document.getElementById('modal-video');
+            video.pause();
+            modal.classList.remove('active');
+            currentModalId = null;
+        }
+
+        function updateModalButtons() {
+            const btn = document.getElementById('modal-btn-confirm');
+            if (confirmedIds.has(currentModalId)) {
+                btn.classList.add('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+            } else {
+                btn.classList.remove('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 確認違規';
+            }
+        }
+
+        function modalConfirm() {
+            if (currentModalId === null) return;
+            confirmCard(currentModalId);
+            updateModalButtons();
+        }
+
+        function modalDelete() {
+            if (currentModalId === null) return;
+            const idToDelete = currentModalId;
+            closeModal();
+            deleteCard(idToDelete);
+        }
+
+        function generateReport() {
+            const confirmedData = DATA.filter(d => confirmedIds.has(d.id));
+            if (confirmedData.length === 0) {
+                alert('請先確認至少一筆違規記錄');
+                return;
+            }
+
+            // 顯示確認列表
+            showConfirmModal(confirmedData);
+        }
+
+        function cleanMesg(mesg) {
+            return mesg.replace(/\s*ID[:\s]*[\d,\s]+/gi, '').trim();
+        }
+
+        function getDisplayTag(mesg, type) {
+            const cleaned = cleanMesg(mesg);
+            if (cleaned.includes('人員未穿戴必要裝備')) {
+                const typeMap = {
+                    'heartbeat': '缺少生命偵測器',
+                    'harness': '缺少安全帶',
+                    'no_hardhat': '未戴安全帽',
+                    'no_safety_vest': '未穿安全背心'
+                };
+                if (typeMap[type]) {
+                    const idMatch = mesg.match(/ID[:\s]*(\d+)/i);
+                    let tag = typeMap[type];
+                    // 特殊處理：ID 746 顯示為「未戴安全帽」
+                    if (idMatch && idMatch[1] === '746' && type === 'heartbeat') {
+                        tag = '未戴安全帽';
+                    }
+                    return tag + (idMatch ? ` (ID:${idMatch[1]})` : '');
+                }
+            }
+            return cleaned;
+        }
+
+        function showConfirmModal(items) {
+            const list = document.getElementById('confirm-list');
+            list.innerHTML = items.map((d, idx) => `
+                <div class="confirm-item" data-id="${d.id}">
+                    <img class="confirm-item-thumb" src="${d.image_url}" onerror="this.style.display='none'">
+                    <div class="confirm-item-info">
+                        <div class="confirm-item-mesg">${cleanMesg(d.mesg)}</div>
+                        <div class="confirm-item-meta">${d.time_display} | ID: ${d.person_ids}</div>
+                    </div>
+                    <button class="confirm-item-remove" onclick="removeFromConfirm(${d.id})" title="移除">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+
+            document.getElementById('confirm-modal').classList.add('active');
+        }
+
+        function closeConfirmModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('confirm-modal').classList.remove('active');
+        }
+
+        function removeFromConfirm(id) {
+            confirmedIds.delete(id);
+            // 更新卡片狀態
+            const card = document.getElementById('card-' + id);
+            const btn = document.getElementById('btn-confirm-' + id);
+            if (card) card.classList.remove('confirmed');
+            if (btn) {
+                btn.classList.remove('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 確認違規';
+            }
+            updateStats();
+
+            // 從列表中移除該項目
+            const item = document.querySelector(`.confirm-item[data-id="${id}"]`);
+            if (item) item.remove();
+
+            // 若無確認項目則關閉 modal
+            if (confirmedIds.size === 0) {
+                closeConfirmModal();
+            }
+        }
+
+        function proceedToReport() {
+            const confirmedData = DATA.filter(d => confirmedIds.has(d.id)).map(d => {
+                return { ...d, note: notes[d.id] || '' };
+            });
+
+            // 儲存確認的資料到 localStorage（含備註）
+            const reportData = {
+                date: DATE,
+                category: CATEGORY,
+                items: confirmedData
+            };
+            localStorage.setItem('reportData_' + DATE + '_' + CATEGORY, JSON.stringify(reportData));
+
+            // 跳轉到報告頁面
+            window.location.href = REPORT_PATH;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeConfirmModal();
+            }
+        });
+    </script>
+
+<script>
+// ========== API 整合腳本 ==========
+(function() {
+    const API_BASE_URL = 'http://192.168.53.96:8001/api/v1';
+    let dbIdMap = {};
+
+    // 覆寫原本的 loadState
+    const originalLoadState = window.loadState;
+
+    window.loadState = async function() {
+        try {
+            // 從 API 取得資料並建立 ID 對應
+            const response = await fetch(`${API_BASE_URL}/detection-logs/${DATE}/${encodeURIComponent(CATEGORY)}`);
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success && result.data.items) {
+                    result.data.items.forEach(item => {
+                        dbIdMap[item.original_id] = item.id;
+
+                        // 套用 API 已儲存的審核狀態
+                        if (item.review_status === 'confirmed') {
+                            confirmedIds.add(item.original_id);
+                        } else if (item.review_status === 'deleted') {
+                            deletedIds.add(item.original_id);
+                        }
+                        if (item.note) {
+                            notes[item.original_id] = item.note;
+                        }
+                    });
+                    console.log('已從 API 建立 ID 對應，共 ' + Object.keys(dbIdMap).length + ' 筆');
+                }
+            }
+        } catch (e) {
+            console.error('API 載入失敗:', e);
+        }
+
+        // 合併 localStorage 的資料（優先使用 localStorage，因為可能有更新的資料）
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const state = JSON.parse(saved);
+            let hasLocalData = false;
+
+            if (state.confirmed && state.confirmed.length > 0) {
+                state.confirmed.forEach(id => {
+                    if (!confirmedIds.has(id)) {
+                        confirmedIds.add(id);
+                        hasLocalData = true;
+                    }
+                });
+            }
+            if (state.deleted && state.deleted.length > 0) {
+                state.deleted.forEach(id => {
+                    if (!deletedIds.has(id)) {
+                        deletedIds.add(id);
+                        hasLocalData = true;
+                    }
+                });
+            }
+            if (state.notes) {
+                Object.keys(state.notes).forEach(id => {
+                    if (!notes[id]) {
+                        notes[id] = state.notes[id];
+                    }
+                });
+            }
+
+            // 如果有新的 localStorage 資料，同步到 API
+            if (hasLocalData && Object.keys(dbIdMap).length > 0) {
+                console.log('發現 localStorage 有額外資料，同步到 API...');
+                setTimeout(() => window.saveState(), 500);
+            }
+        }
+
+        // 套用 UI 狀態
+        confirmedIds.forEach(id => {
+            const card = document.getElementById('card-' + id);
+            const btn = document.getElementById('btn-confirm-' + id);
+            if (card) card.classList.add('confirmed');
+            if (btn) {
+                btn.classList.add('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+            }
+        });
+        deletedIds.forEach(id => {
+            const card = document.getElementById('card-' + id);
+            if (card) card.style.display = 'none';
+        });
+        Object.keys(notes).forEach(id => {
+            const input = document.getElementById('note-' + id);
+            if (input && notes[id]) input.value = notes[id];
+        });
+
+        updateStats();
+    };
+
+    // 覆寫原本的 saveState
+    const originalSaveState = window.saveState;
+
+    window.saveState = function() {
+        // 先執行原本的 localStorage 儲存
+        if (originalSaveState) originalSaveState();
+
+        // 同步到 API
+        const actions = [];
+        confirmedIds.forEach(originalId => {
+            const dbId = dbIdMap[originalId];
+            if (dbId) {
+                actions.push({
+                    detection_log_id: dbId,
+                    action: 'confirmed',
+                    note: notes[originalId] || null
+                });
+            }
+        });
+        deletedIds.forEach(originalId => {
+            const dbId = dbIdMap[originalId];
+            if (dbId) {
+                actions.push({
+                    detection_log_id: dbId,
+                    action: 'deleted',
+                    note: null
+                });
+            }
+        });
+
+        if (actions.length > 0) {
+            fetch(`${API_BASE_URL}/reviews/actions/bulk`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    date: DATE,
+                    category: CATEGORY,
+                    actions: actions
+                })
+            }).then(r => r.json()).then(result => {
+                console.log('已同步到 API:', result);
+            }).catch(e => {
+                console.error('API 同步失敗:', e);
+            });
+        }
+    };
+
+    // 將 dbIdMap 暴露到全域
+    window.dbIdMap = dbIdMap;
+
+    console.log('API 整合腳本已載入');
+})();
+</script>
+
+</body>
+</html>

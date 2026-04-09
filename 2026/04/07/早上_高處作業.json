@@ -1,0 +1,2294 @@
+[
+  {
+    "time": "10:31:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:240",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:30:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:240",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:30:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:240",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:30:30",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:240",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:30:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:240",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:30:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:240, ID:237",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:29:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:236, ID:240, ID:237",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:29:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:236, ID:237",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:29:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:237",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:29:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:236",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:29:09",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:233",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:28:36",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:232",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:28:06",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:27:55",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:27:44",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:27:33",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:27:22",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:27:11",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:27:00",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:26:50",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:26:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:26:28",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:223, ID:225, ID:227",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:26:17",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:223, ID:225",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:26:06",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:223",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:25:55",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:25:43",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:25:32",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:25:21",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:25:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:24:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:24:48",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:24:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:24:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:24:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:24:04",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:23:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:23:42",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:23:31",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:23:21",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:23:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:22:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:22:48",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:22:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:22:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:22:15",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:22:04",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:21:53",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:214",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:21:42",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:211",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:21:32",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:211",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:21:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:21:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:20:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:20:44",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:20:33",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:20:20",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:20:09",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:19:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:19:45",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:204, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:19:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:19:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:19:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:19:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:18:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:18:39",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:18:28",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:202, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:18:17",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:18:06",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:17:55",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:17:43",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:201, ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:17:32",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:17:21",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:17:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194, ID:199",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:16:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:16:48",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:16:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:16:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:16:15",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:194",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:14:58",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:14:47",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:14:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:14:25",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:14:14",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:14:03",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:13:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:13:41",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:13:30",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:13:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:13:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:12:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:12:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:183",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:12:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:184, ID:183, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:12:25",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:183, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:12:14",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:182, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:12:03",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:182, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:11:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:11:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:180, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:11:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:180, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:11:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:180, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:11:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:10:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:178, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:10:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:178",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:10:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:10:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:175, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:10:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:10:00",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:174, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:09:48",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:174, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:09:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:174, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:09:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:174, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:09:15",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:174, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:09:05",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:08:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:08:42",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:08:31",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:08:21",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:08:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:07:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:07:48",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:07:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:07:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:170, ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:07:15",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:07:04",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:06:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:06:42",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:06:31",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:06:20",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:06:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:05:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:05:48",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:163",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:03:49",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:157",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:03:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:157",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:03:27",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:157",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:03:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:157",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:03:06",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:157, ID:156",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:02:55",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:152",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:02:43",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:152",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:02:33",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:152",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:02:22",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:152",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:02:11",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:152",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:02:01",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:152",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:01:23",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:149",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:01:12",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:149",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:01:01",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:149",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:00:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:149",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:00:30",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:00:20",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "10:00:09",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:59:58",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:59:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:59:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:59:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:146",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:58:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:58:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:58:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:58:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:58:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:57:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:57:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:57:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:57:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:141, ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:57:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:141, ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:56:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:140, ID:138",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:56:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:140",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:54:05",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:53:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:53:41",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:53:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:53:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:53:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:52:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:52:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:52:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:52:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:52:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:52:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:51:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:51:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:51:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:51:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:51:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:50:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:50:44",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:50:33",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:50:23",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:50:12",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:50:01",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:49:49",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123, ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:49:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123, ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:49:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123, ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:49:15",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:123, ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:49:04",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:48:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:48:41",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:48:30",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:122",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:48:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:48:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:47:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:47:44",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:47:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:47:23",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:47:12",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:47:01",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:46:50",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:46:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:46:27",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:46:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:46:05",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:45:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:45:42",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:45:32",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:45:20",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117, ID:114",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:45:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:44:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:117",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:44:47",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:44:36",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:44:25",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:44:14",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:44:03",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:43:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:43:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:114, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:43:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:43:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:113",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:43:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:42:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:42:44",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:42:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:42:22",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:42:11",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:42:01",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:41:50",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:41:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:41:28",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:41:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:41:06",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:40:55",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:107, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:40:43",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:40:32",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:40:21",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:40:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:40:00",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80, ID:97",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:39:49",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80, ID:96",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:39:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:39:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:39:15",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80, ID:95",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:39:04",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:91, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:38:53",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:91",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:38:41",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:38:31",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80, ID:88",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:38:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80, ID:88",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:38:09",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:37:58",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80, ID:85",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:37:46",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:37:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:37:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:37:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:80",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:37:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:80, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:36:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:80, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:36:39",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:36:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:36:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:36:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:35:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:35:44",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:35:33",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:77, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:35:22",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:35:11",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:76, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:35:00",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:34:49",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:34:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:34:27",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:34:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:34:05",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:33:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:33:43",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:33:32",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:33:22",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:33:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:33:00",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:63, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:32:49",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:63, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:32:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:63, ID:6, ID:64",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:32:27",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:32:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:32:05",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:61, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:31:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:61, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:31:42",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:31:31",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:31:21",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:31:10",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:30:59",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:30:49",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:30:37",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:30:26",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:30:16",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:30:05",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:6, ID:60",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:29:54",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:29:41",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:29:31",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:29:20",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:29:09",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:28:58",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:28:47",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:28:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:28:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:57, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:28:14",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:28:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:27:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:27:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:54, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:27:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:27:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:27:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:26:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:26:45",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:6, ID:41",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:26:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:26:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:26:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:6, ID:41",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:26:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:6, ID:41",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:25:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48, ID:6, ID:41",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:25:39",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:48",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:25:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:25:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:25:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:24:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:24:45",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:24:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:24:23",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:24:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:24:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:23:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:23:39",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:23:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:23:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:23:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:22:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:22:45",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:22:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:22:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:22:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:22:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:21:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:21:39",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:21:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:35, ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:21:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:35, ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:21:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:20:57",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:20:45",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6, ID:33",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:20:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6, ID:33",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:20:23",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:30, ID:6, ID:33",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:20:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:30, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:20:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:30, ID:6, ID:32",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:19:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:30, ID:6, ID:32",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:19:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:30, ID:6, ID:32",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:19:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:30, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:19:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:30, ID:6, ID:28",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:19:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:18:56",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:18:45",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:26, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:18:34",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:18:23",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:26, ID:27, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:18:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:27, ID:26, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:18:02",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:26, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:17:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:25, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:17:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:26, ID:25, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:17:29",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:26, ID:25, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:17:18",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:24, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:17:07",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:22",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:14:38",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:14, ID:7, ID:15, ID:6, ID:11",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:14:27",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:13, ID:11",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:14:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:7, ID:13, ID:6, ID:11, ID:12",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:14:14",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:10, ID:6, ID:1, ID:7",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:14:03",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:7, ID:10, ID:1, ID:6, ID:8",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:13:52",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:8, ID:1",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:13:40",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:8, ID:6, ID:1, ID:7",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:13:30",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:6, ID:1, ID:3, ID:7",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:13:19",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:1, ID:3, ID:6",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:13:08",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:1, ID:3, ID:6, ID:7",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:12:58",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:4, ID:6, ID:1, ID:3",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:12:47",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:4, ID:5, ID:1, ID:3",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:12:35",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:4, ID:5, ID:1, ID:3",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:12:24",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:4, ID:1, ID:3",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:12:13",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:0, ID:3, ID:4, ID:1, ID:2",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:12:01",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:1, ID:2, ID:0",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:11:51",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:602, ID:585, ID:591, ID:596",
+    "camera_id": "758"
+  },
+  {
+    "time": "09:11:39",
+    "type": "hooked",
+    "mesg": "掛鉤未確實掛於施工架上 ID:591, ID:596",
+    "camera_id": "758"
+  }
+]

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>匯出 localStorage 資料</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #3B82F6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563EB;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            max-height: 400px;
+        }
+        .stats {
+            background: #EFF6FF;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>匯出瀏覽器 localStorage 資料</h1>
+    <p>這個工具會匯出所有中油偵測報告系統的審核資料。</p>
+
+    <div class="stats" id="stats"></div>
+
+    <button onclick="exportData()">🔽 匯出所有資料為 JSON</button>
+    <button onclick="showData()">👁️ 預覽資料</button>
+    <button onclick="clearPreview()">🗑️ 清除預覽</button>
+
+    <h3>資料預覽：</h3>
+    <pre id="preview"></pre>
+
+    <script>
+        function getAllCPCData() {
+            const data = {
+                reviewStates: {},
+                reportData: {},
+                metadata: {
+                    exportTime: new Date().toISOString(),
+                    totalItems: 0
+                }
+            };
+
+            // 掃描所有 localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+
+                // 審核狀態
+                if (key.startsWith('reviewState_')) {
+                    const value = localStorage.getItem(key);
+                    try {
+                        data.reviewStates[key] = JSON.parse(value);
+                        data.metadata.totalItems++;
+                    } catch (e) {
+                        console.error('解析失敗:', key, e);
+                    }
+                }
+
+                // 報告資料
+                if (key.startsWith('reportData_')) {
+                    const value = localStorage.getItem(key);
+                    try {
+                        data.reportData[key] = JSON.parse(value);
+                        data.metadata.totalItems++;
+                    } catch (e) {
+                        console.error('解析失敗:', key, e);
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        function showStats() {
+            const data = getAllCPCData();
+            const reviewCount = Object.keys(data.reviewStates).length;
+            const reportCount = Object.keys(data.reportData).length;
+
+            document.getElementById('stats').innerHTML = `
+                <h3>📊 資料統計</h3>
+                <p><strong>審核狀態記錄：</strong>${reviewCount} 筆</p>
+                <p><strong>報告資料記錄：</strong>${reportCount} 筆</p>
+                <p><strong>總計：</strong>${reviewCount + reportCount} 筆</p>
+            `;
+        }
+
+        function showData() {
+            const data = getAllCPCData();
+            document.getElementById('preview').textContent = JSON.stringify(data, null, 2);
+        }
+
+        function clearPreview() {
+            document.getElementById('preview').textContent = '';
+        }
+
+        function exportData() {
+            const data = getAllCPCData();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cpc_localStorage_export_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert(`已匯出 ${data.metadata.totalItems} 筆資料！`);
+        }
+
+        // 頁面載入時顯示統計
+        showStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>清除審核快取</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; padding: 40px; text-align: center; }
+        .btn { padding: 15px 30px; font-size: 16px; cursor: pointer; margin: 10px; border-radius: 8px; border: none; }
+        .btn-danger { background: #EF4444; color: white; }
+        .btn-primary { background: #3B82F6; color: white; }
+        .result { margin-top: 20px; padding: 20px; border-radius: 8px; }
+        .success { background: #D1FAE5; color: #065F46; }
+    </style>
+</head>
+<body>
+    <h1>清除審核快取</h1>
+    <p>點擊下方按鈕清除所有審核相關的快取資料</p>
+
+    <button class="btn btn-danger" onclick="clearAll()">清除所有審核資料</button>
+    <button class="btn btn-primary" onclick="window.location.href='index.html'">返回總覽</button>
+
+    <div id="result"></div>
+
+    <script>
+        function clearAll() {
+            let count = 0;
+            const keysToRemove = [];
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('reviewState_') || key.startsWith('reportData_'))) {
+                    keysToRemove.push(key);
+                }
+            }
+
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                count++;
+            });
+
+            document.getElementById('result').innerHTML =
+                '<div class="result success">已清除 ' + count + ' 筆快取資料<br><br>請重新開啟審核頁面進行審核</div>';
+        }
+    </script>
+</body>
+</html>
