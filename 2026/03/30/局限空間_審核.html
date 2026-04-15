@@ -5432,7 +5432,6 @@
 
     <script>
         // API 配置
-        const API_BASE_URL = 'http://192.168.53.96:8001/api/v1';
         const DATE = '2026-03-30';
         const CATEGORY = '局限空間';
         const REPORT_PATH = '局限空間_報告.html';
@@ -5447,7 +5446,6 @@
         const STORAGE_KEY = 'reviewState_' + DATE + '_' + CATEGORY;
 
         // 從 API 載入資料
-        async function loadDataFromAPI() {
             try {
                 const response = await fetch(`${API_BASE_URL}/detection-logs/${DATE}/${encodeURIComponent(CATEGORY)}`);
                 const result = await response.json();
@@ -5612,7 +5610,6 @@
 
         // 載入狀態（從 API 載入）
         function loadState() {
-            // 已在 loadDataFromAPI() 中處理
         }
 
         // 顯示錯誤訊息
@@ -5633,7 +5630,6 @@
         }
 
         // 頁面載入時從 API 載入資料
-        window.addEventListener('load', loadDataFromAPI);
 
         function updateStats() {
             const pending = DATA.length - confirmedIds.size - deletedIds.size;
