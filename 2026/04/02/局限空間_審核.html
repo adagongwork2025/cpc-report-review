@@ -489,7 +489,7 @@
         <div class="grid" id="grid">
 
             
-            <div class="card" data-id="700000" id="card-700000">
+            <div class="card confirmed" data-id="700000" id="card-700000">
                 <div class="card-media">
                     <img src="ID21_thumbnail.jpg" alt="預覽圖" id="thumb-700000">
                     <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/865_%E5%85%A8%E6%94%9D%E5%BD%B1%E6%A9%9F%E5%8D%80%E5%9F%9F_161716333.mp4" id="video-700000" preload="none" style="display:none" loop></video>
@@ -511,7 +511,7 @@
                         <input type="text" class="note-input" id="note-700000" placeholder="備註..." onchange="saveNote(700000, this.value)">
                     </div>
                     <div class="card-actions">
-                        <button class="btn btn-sm btn-confirm" id="btn-confirm-700000" onclick="confirmCard(700000)">
+                        <button class="btn btn-sm btn-confirm confirmed" id="btn-confirm-700000" onclick="confirmCard(700000)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                             確認違規
                         </button>
@@ -522,7 +522,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card" data-id="731859" id="card-731859">
+            <div class="card" data-id="731859" id="card-731859" style="display:none">
                 <div class="card-media">
                     <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_118094_143622872.jpg" alt="預覽圖" id="thumb-731859">
                     <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_143622883.mp4" id="video-731859" preload="none" style="display:none" loop></video>
@@ -555,7 +555,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card" data-id="732532" id="card-732532">
+            <div class="card" data-id="732532" id="card-732532" style="display:none">
                 <div class="card-media">
                     <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125578_151354074.jpg" alt="預覽圖" id="thumb-732532">
                     <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151354088.mp4" id="video-732532" preload="none" style="display:none" loop></video>
@@ -588,7 +588,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card" data-id="732540" id="card-732540">
+            <div class="card confirmed" data-id="732540" id="card-732540">
                 <div class="card-media">
                     <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125640_151405703.jpg" alt="預覽圖" id="thumb-732540">
                     <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151405716.mp4" id="video-732540" preload="none" style="display:none" loop></video>
@@ -610,7 +610,7 @@
                         <input type="text" class="note-input" id="note-732540" placeholder="備註..." onchange="saveNote(732540, this.value)">
                     </div>
                     <div class="card-actions">
-                        <button class="btn btn-sm btn-confirm" id="btn-confirm-732540" onclick="confirmCard(732540)">
+                        <button class="btn btn-sm btn-confirm confirmed" id="btn-confirm-732540" onclick="confirmCard(732540)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                             確認違規
                         </button>
@@ -688,8 +688,8 @@
         const PRESET_TIMES = [];  // 預設確認的時間列表
 
         let DATA = [];  // 從 API 載入
-        let confirmedIds = new Set();
-        let deletedIds = new Set();
+        let confirmedIds = new Set([700000,732540]);
+        let deletedIds = new Set([732532,731859]);
         let currentModalId = null;
         let notes = {};  // 備註資料 {id: note}
 
