@@ -159,21 +159,6 @@
             box-shadow: none;
         }
 
-        .status-badge {
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 8px;
-        }
-        .status-badge.confirmed {
-            background: #D1FAE5;
-            color: #059669;
-        }
-        .status-badge.pending {
-            background: #FEF3C7;
-            color: #D97706;
-        }
-
         .empty-state {
             text-align: center;
             padding: 80px 32px;
@@ -184,12 +169,6 @@
             height: 80px;
             margin-bottom: 24px;
             opacity: 0.3;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--text-secondary);
         }
 
         .footer {
@@ -213,7 +192,6 @@
     </header>
 
     <main class="main" id="main">
-        <div class="loading">載入中...</div>
     </main>
 
     <footer class="footer">
@@ -221,54 +199,16 @@
     </footer>
 
     <script>
-        const API_BASE_URL = '/api/v1';
         const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
-        let REPORT_DATA = [];
+        const REPORT_DATA = [{"date": "2026-03-30", "category": "高處作業", "reviewPath": "2026/03/30/高處作業_審核.html", "reportPath": "2026/03/30/高處作業_報告_管理版.html"}, {"date": "2026-03-30", "category": "局限空間", "reviewPath": "2026/03/30/局限空間_審核.html", "reportPath": "2026/03/30/局限空間_報告_管理版.html"}, {"date": "2026-03-31", "category": "高處作業", "reviewPath": "2026/03/31/高處作業_審核.html", "reportPath": "2026/03/31/高處作業_報告_管理版.html"}, {"date": "2026-03-31", "category": "局限空間", "reviewPath": "2026/03/31/局限空間_審核.html", "reportPath": "2026/03/31/局限空間_報告_管理版.html"}, {"date": "2026-04-01", "category": "高處作業", "reviewPath": "2026/04/01/高處作業_審核.html", "reportPath": "2026/04/01/高處作業_報告_管理版.html"}, {"date": "2026-04-02", "category": "局限空間", "reviewPath": "2026/04/02/局限空間_審核.html", "reportPath": "2026/04/02/局限空間_報告_管理版.html"}, {"date": "2026-04-07", "category": "高處作業", "reviewPath": "2026/04/07/高處作業_審核.html", "reportPath": "2026/04/07/高處作業_報告_管理版.html"}, {"date": "2026-04-08", "category": "高處作業", "reviewPath": "2026/04/08/高處作業_審核.html", "reportPath": "2026/04/08/高處作業_報告_管理版.html"}, {"date": "2026-04-08", "category": "局限空間", "reviewPath": "2026/04/08/局限空間_審核.html", "reportPath": "2026/04/08/局限空間_報告_管理版.html"}, {"date": "2026-04-09", "category": "高處作業", "reviewPath": "2026/04/09/高處作業_審核.html", "reportPath": "2026/04/09/高處作業_報告_管理版.html"}, {"date": "2026-04-13", "category": "高處作業", "reviewPath": "2026/04/13/高處作業_審核.html", "reportPath": "2026/04/13/高處作業_報告_管理版.html"}, {"date": "2026-04-14", "category": "高處作業", "reviewPath": "2026/04/14/高處作業_審核.html", "reportPath": "2026/04/14/高處作業_報告_管理版.html"}];
 
-        async function loadDataFromAPI() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/stats/dates?year=2026`);
-                const result = await response.json();
-
-                if (result.success && result.data) {
-                    REPORT_DATA = result.data.map(item => {
-                        const [year, month, day] = item.date.split('-');
-                        return {
-                            date: item.date,
-                            category: item.category,
-                            reviewPath: `${year}/${month}/${day}/${item.category}_審核.html`,
-                            reportPath: `${year}/${month}/${day}/${item.category}_報告_管理版.html`,
-                            confirmed_count: item.confirmed_count,
-                            total_items: item.total_items,
-                            pending_count: item.pending_count
-                        };
-                    });
-
-                    console.log('✓ 從 API 載入 ' + REPORT_DATA.length + ' 筆資料');
-                    // 手動加入 4/8 資料
-                    REPORT_DATA.push({date: "2026-04-08", category: "高處作業", reviewPath: "2026/04/08/高處作業_審核.html", reportPath: "2026/04/08/高處作業_報告_管理版.html", confirmed_count: 0, total_items: 103, pending_count: 0, reviewed: true});
-                    REPORT_DATA.push({date: "2026-04-08", category: "局限空間", reviewPath: "2026/04/08/局限空間_審核.html", reportPath: "2026/04/08/局限空間_報告_管理版.html", confirmed_count: 2, total_items: 9, pending_count: 9});
-                    render();
-                } else {
-                    showError('資料載入失敗');
-                }
-            } catch (error) {
-                console.error('API 載入失敗:', error);
-                showError('無法連接伺服器');
+        function checkReportAccess(reportKey, category) {
+            const hasData = localStorage.getItem(reportKey);
+            if (!hasData) {
+                alert('請先完成「' + category + '」的審核作業，\n按下「偵測報告」按鈕後才能檢視報告。');
+                return false;
             }
-        }
-
-        function showError(message) {
-            document.getElementById('main').innerHTML = `
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: #EF4444;">
-                        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                    </svg>
-                    <h3>${message}</h3>
-                    <button onclick="location.reload()" style="margin-top: 16px; padding: 10px 20px; background: #3B82F6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">
-                        重新載入
-                    </button>
-                </div>`;
+            return true;
         }
 
         function render() {
@@ -323,21 +263,13 @@
                         <div class="category-list">`;
 
                     items.forEach(item => {
-                        const hasConfirmed = item.confirmed_count > 0 || item.reviewed || (item.pending_count === 0 && item.total_items > 0);
-
-                        // 狀態標籤
-                        let statusBadge = '';
-                        if (item.confirmed_count > 0) {
-                            statusBadge = "";
-                        } else if (item.pending_count > 0) {
-                            statusBadge = "";
-                        }
-
+                        const reportKey = 'reportData_' + item.date + '_' + item.category;
+                        const hasReviewedData = localStorage.getItem(reportKey);
                         html += `<div class="category-item">
-                            <span class="category-name">${item.category}${statusBadge}</span>
+                            <span class="category-name">${item.category}</span>
                             <div class="category-links">
                                 <a href="${item.reviewPath}" class="link-review">審核</a>
-                                <a href="${item.reportPath}" class="link-report${hasConfirmed ? '' : ' disabled'}" ${hasConfirmed ? '' : 'onclick="alert(\'請先完成審核並確認至少一筆違規\'); return false;"'}>報告</a>
+                                ${item.reportPath ? `<a href="${item.reportPath}" class="link-report${hasReviewedData ? '' : ' disabled'}" onclick="return checkReportAccess('${reportKey}', '${item.category}')">報告</a>` : ''}
                             </div>
                         </div>`;
                     });
@@ -351,8 +283,7 @@
             document.getElementById('main').innerHTML = html;
         }
 
-        // 頁面載入時從 API 載入資料
-        window.addEventListener('load', loadDataFromAPI);
+        render();
     </script>
 </body>
 </html>
