@@ -202,15 +202,6 @@
         const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
         const REPORT_DATA = [{"date": "2026-03-30", "category": "高處作業", "reviewPath": "2026/03/30/高處作業_審核.html", "reportPath": "2026/03/30/高處作業_報告_管理版.html"}, {"date": "2026-03-30", "category": "局限空間", "reviewPath": "2026/03/30/局限空間_審核.html", "reportPath": "2026/03/30/局限空間_報告_管理版.html"}, {"date": "2026-03-31", "category": "高處作業", "reviewPath": "2026/03/31/高處作業_審核.html", "reportPath": "2026/03/31/高處作業_報告_管理版.html"}, {"date": "2026-03-31", "category": "局限空間", "reviewPath": "2026/03/31/局限空間_審核.html", "reportPath": "2026/03/31/局限空間_報告_管理版.html"}, {"date": "2026-04-01", "category": "高處作業", "reviewPath": "2026/04/01/高處作業_審核.html", "reportPath": "2026/04/01/高處作業_報告_管理版.html"}, {"date": "2026-04-02", "category": "局限空間", "reviewPath": "2026/04/02/局限空間_審核.html", "reportPath": "2026/04/02/局限空間_報告_管理版.html"}, {"date": "2026-04-07", "category": "高處作業", "reviewPath": "2026/04/07/高處作業_審核.html", "reportPath": "2026/04/07/高處作業_報告_管理版.html"}, {"date": "2026-04-08", "category": "高處作業", "reviewPath": "2026/04/08/高處作業_審核.html", "reportPath": "2026/04/08/高處作業_報告_管理版.html"}, {"date": "2026-04-08", "category": "局限空間", "reviewPath": "2026/04/08/局限空間_審核.html", "reportPath": "2026/04/08/局限空間_報告_管理版.html"}, {"date": "2026-04-09", "category": "高處作業", "reviewPath": "2026/04/09/高處作業_審核.html", "reportPath": "2026/04/09/高處作業_報告_管理版.html"}, {"date": "2026-04-10", "category": "高處A", "reviewPath": "2026/04/10/高處A_審核.html", "reportPath": "2026/04/10/高處A_報告_管理版.html"}, {"date": "2026-04-10", "category": "高處B", "reviewPath": "2026/04/10/高處B_審核.html", "reportPath": "2026/04/10/高處B_報告_管理版.html"}, {"date": "2026-04-13", "category": "高處作業", "reviewPath": "2026/04/13/高處作業_審核.html", "reportPath": "2026/04/13/高處作業_報告_管理版.html"}, {"date": "2026-04-14", "category": "高處作業", "reviewPath": "2026/04/14/高處作業_審核.html", "reportPath": "2026/04/14/高處作業_報告_管理版.html"}];
 
-        function checkReportAccess(reportKey, category) {
-            const hasData = localStorage.getItem(reportKey);
-            if (!hasData) {
-                alert('請先完成「' + category + '」的審核作業，\n按下「偵測報告」按鈕後才能檢視報告。');
-                return false;
-            }
-            return true;
-        }
-
         function render() {
             if (!REPORT_DATA || REPORT_DATA.length === 0) {
                 document.getElementById('main').innerHTML = `
@@ -263,13 +254,11 @@
                         <div class="category-list">`;
 
                     items.forEach(item => {
-                        const reportKey = 'reportData_' + item.date + '_' + item.category;
-                        const hasReviewedData = localStorage.getItem(reportKey);
                         html += `<div class="category-item">
                             <span class="category-name">${item.category}</span>
                             <div class="category-links">
                                 <a href="${item.reviewPath}" class="link-review">審核</a>
-                                ${item.reportPath ? `<a href="${item.reportPath}" class="link-report${hasReviewedData ? '' : ' disabled'}" onclick="return checkReportAccess('${reportKey}', '${item.category}')">報告</a>` : ''}
+                                ${item.reportPath ? `<a href="${item.reportPath}" class="link-report">報告</a>` : ''}
                             </div>
                         </div>`;
                     });
