@@ -390,6 +390,20 @@
         const REPORT_KEY = 'reportData_' + DATE + '_' + CATEGORY;
 
         let reportData = null;
+        // ========== 嵌入的報告資料 ==========
+        (function() {
+            const embeddedData = {"date": "2026-04-02", "category": "局限空間", "items": [{"mesg": "缺少生命偵測器 ID:21", "type": "unknown", "time_display": "09:04:55", "person_ids": "21", "image_url": "ID21_thumbnail.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/865_%E5%85%A8%E6%94%9D%E5%BD%B1%E6%A9%9F%E5%8D%80%E5%9F%9F_161716333.mp4", "time": "2026-04-02T09:04:55.000000", "id": 700000}, {"mesg": "缺少生命偵測器 ID:425", "type": "unknown", "time_display": "15:14:05", "person_ids": "425", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260402/1921685396_111_1_837_125640_151405703.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260402/837_PPE_151405716.mp4", "time": "2026-04-02T15:14:05.000000", "id": 732540}]};
+            const storageKey = 'reportData_2026-04-02_局限空間';
+
+            // 如果 localStorage 沒有資料，使用嵌入的資料
+            if (!localStorage.getItem(storageKey)) {
+                localStorage.setItem(storageKey, JSON.stringify(embeddedData));
+                console.log('✓ 已載入嵌入的報告資料（' + embeddedData.items.length + ' 筆）');
+            }
+        })();
+        // ====================================
+
+        
 
         function loadData() {
             // 優先從 API 載入

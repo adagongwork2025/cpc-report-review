@@ -390,6 +390,20 @@
         const REPORT_KEY = 'reportData_' + DATE + '_' + CATEGORY;
 
         let reportData = null;
+        // ========== 嵌入的報告資料 ==========
+        (function() {
+            const embeddedData = {"date": "2026-03-31", "category": "高處作業", "items": [{"mesg": "掛鉤未確實掛於施工架上 ID:44, ID:49, ID:42, ID:48, ID:47", "type": "hooked", "time_display": "14:08:28", "person_ids": "47", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260331/1921685314_80_0_758_1026201_140828609.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260331/758_高處_140828621.mp4", "time": "2026-03-31T14:08:28.000000", "id": 718452}, {"mesg": "掛鉤未確實掛於施工架上 ID:22", "type": "hooked", "time_display": "13:42:21", "person_ids": "22", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260331/1921685314_80_0_758_1021111_134222050.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260331/758_高處_134222064.mp4", "time": "2026-03-31T13:42:21.000000", "id": 717923}, {"mesg": "掛鉤未確實掛於施工架上 ID:110, ID:117, ID:116", "type": "hooked", "time_display": "10:35:08", "person_ids": "116", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260331/1921685314_80_0_758_984654_103508274.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260331/758_高處_103508291.mp4", "time": "2026-03-31T10:35:08.000000", "id": 714241}, {"mesg": "掛鉤未確實掛於施工架上 ID:109, ID:113, ID:110, ID:111", "type": "hooked", "time_display": "10:33:16", "person_ids": "111", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260331/1921685314_80_0_758_984280_103317036.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260331/758_高處_103317049.mp4", "time": "2026-03-31T10:33:16.000000", "id": 714185}, {"mesg": "掛鉤未確實掛於施工架上 ID:104, ID:94, ID:100, ID:103, ID:102", "type": "hooked", "time_display": "10:27:01", "person_ids": "102", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260331/1921685314_80_0_758_982941_102701836.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260331/758_高處_102701849.mp4", "time": "2026-03-31T10:27:01.000000", "id": 713977}, {"mesg": "人員無穿戴安全帽", "type": "unknown", "time_display": "09:39:09", "person_ids": "", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260331/19216853253_68_0_758_1471112_093909176.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260331/758_高處_093909194.mp4", "time": "2026-03-31T09:39:09.000000", "id": 712456}]};
+            const storageKey = 'reportData_2026-03-31_高處作業';
+
+            // 如果 localStorage 沒有資料，使用嵌入的資料
+            if (!localStorage.getItem(storageKey)) {
+                localStorage.setItem(storageKey, JSON.stringify(embeddedData));
+                console.log('✓ 已載入嵌入的報告資料（' + embeddedData.items.length + ' 筆）');
+            }
+        })();
+        // ====================================
+
+        
 
         function loadData() {
             // 優先從 API 載入
