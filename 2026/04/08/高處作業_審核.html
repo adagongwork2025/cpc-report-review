@@ -446,6 +446,17 @@
             font-size: 13px;
         }
     </style>
+    <script>
+        if (sessionStorage.getItem('reviewAuth') !== 'true') {
+            const pwd = prompt('請輸入審核密碼：');
+            if (pwd !== 'cpc2026') {
+                alert('密碼錯誤');
+                window.location.href = '../../../index.html';
+            } else {
+                sessionStorage.setItem('reviewAuth', 'true');
+            }
+        }
+    </script>
 </head>
 <body>
     <header class="header">

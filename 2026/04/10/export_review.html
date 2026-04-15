@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>匯出審核結果</title>
+</head>
+<body>
+    <h1>匯出 4/10 高處B 審核結果</h1>
+    <button onclick="exportData()">匯出資料</button>
+    <pre id="output"></pre>
+
+    <script>
+        function exportData() {
+            const reviewState = localStorage.getItem('reviewState_2026-04-10_高處B');
+            const reportData = localStorage.getItem('reportData_2026-04-10_高處B');
+
+            const output = {
+                reviewState: reviewState ? JSON.parse(reviewState) : null,
+                reportData: reportData ? JSON.parse(reportData) : null
+            };
+
+            document.getElementById('output').textContent = JSON.stringify(output, null, 2);
+
+            // 自動下載
+            const blob = new Blob([JSON.stringify(output, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '高處B_審核結果_2026-04-10.json';
+            a.click();
+
+            alert('資料已匯出！請將 JSON 檔案內容貼給我。');
+        }
+    </script>
+</body>
+</html>

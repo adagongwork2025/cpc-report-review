@@ -1,13 +1,24 @@
-# macOS
-.DS_Store
+# 影片檔案
+*.mp4
+videos/
 
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+.env
 
-# Logs
-logs/
+# 備份檔案
+*_backup/
+*.bak
+*.old
 
 # IDE
-.idea/
 .vscode/
+.idea/
+*.swp
+
+# 系統檔案
+.DS_Store
+Thumbs.db

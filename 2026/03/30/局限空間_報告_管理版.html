@@ -392,69 +392,13 @@
         let reportData = null;
 
         function loadData() {
-            // 優先從 API 載入
-            loadDataFromAPI();
-        }
-
-        async function loadDataFromAPI() {
-            try {
-                const response = await fetch(`http://192.168.53.96:8001/api/v1/reports/${DATE}/${encodeURIComponent(CATEGORY)}`);
-                const result = await response.json();
-
-                if (result.success && result.data.items && result.data.items.length > 0) {
-                    reportData = {
-                        date: result.data.date,
-                        category: result.data.category,
-                        items: result.data.items
-                    };
-                    renderReport();
-                    console.log(`✓ 從 API 載入 ${reportData.items.length} 筆已確認違規`);
-                } else {
-                    // 降級到 localStorage
-                    console.log('API 無資料，嘗試從 localStorage 載入');
-                    loadDataFromLocalStorage();
-                }
-            } catch (error) {
-                console.error('API 載入失敗:', error);
-                // 降級到 localStorage
-                loadDataFromLocalStorage();
-            }
-        }
-
-        function loadDataFromLocalStorage() {
             const stored = localStorage.getItem(REPORT_KEY);
             if (stored) {
                 reportData = JSON.parse(stored);
-                renderReport();
-                console.log('✓ 從 localStorage 載入 ' + reportData.items.length + ' 筆');
+                render();
             } else {
-                showError('無報告資料');
-            }
-        }
-
-        function renderReport() {
-            if (!reportData.items || reportData.items.length === 0) {
-                showError('無已確認的違規項目');
-                return;
-            }
-            updateSummary();
-            renderTable();
-            updateDateTime();
-        }
-
-        function showError(message) {
-            const container = document.querySelector('.report-content');
-            if (container) {
-                container.innerHTML = `
-                    <div style="padding: 60px 20px; text-align: center; color: #94A3B8;">
-                        <div style="font-size: 64px; margin-bottom: 20px;">📄</div>
-                        <div style="font-size: 18px; font-weight: 600; color: #64748B; margin-bottom: 12px;">${message}</div>
-                        <div style="font-size: 14px; color: #94A3B8; margin-bottom: 30px;">請先完成違規審核</div>
-                        <button onclick="history.back()" style="padding: 12px 24px; background: #3B82F6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
-                            返回審核頁面
-                        </button>
-                    </div>
-                `;
+                document.getElementById('grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#94A3B8;">尚無資料，請先在審核頁面確認違規項目</div>';
+                document.getElementById('total-count').textContent = '0';
             }
         }
 
@@ -640,7 +584,7 @@ body { font-family: '微軟正黑體', -apple-system, sans-serif; font-size: 16p
 </style>
 </head>
 <body>
-<button class="print-btn" onclick="window.print()">列印 / 存成 PDF</button>`;
+<button class="print-btn" onclick="window.print()">存成 PDF</button>`;
 
             for (let i = 0; i < reportData.items.length; i++) {
                 const d = reportData.items[i];

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 審核結果</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft JhengHei', sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { font-size: 28px; margin-bottom: 15px; }
+        .stats { display: flex; gap: 20px; margin-top: 20px; }
+        .stat-box { flex: 1; padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-box.violation { background: #fee; border: 2px solid #f44336; }
+        .stat-box.false { background: #e8f5e9; border: 2px solid #4caf50; }
+        .stat-box.unclear { background: #fff8e1; border: 2px solid #ff9800; }
+        .stat-number { font-size: 48px; font-weight: bold; margin-bottom: 5px; }
+        .stat-box.violation .stat-number { color: #f44336; }
+        .stat-box.false .stat-number { color: #4caf50; }
+        .stat-box.unclear .stat-number { color: #ff9800; }
+        .cases { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 20px; }
+        .case { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .case.violation { border-left: 5px solid #f44336; }
+        .case.false { border-left: 5px solid #4caf50; }
+        .case.unclear { border-left: 5px solid #ff9800; }
+        .case-image { width: 100%; height: 300px; object-fit: cover; background: #000; }
+        .case-body { padding: 20px; }
+        .case-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .case-id { font-size: 18px; font-weight: bold; }
+        .case-time { color: #999; font-size: 14px; }
+        .case-type { font-size: 14px; color: #666; margin-bottom: 10px; }
+        .judgment { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; }
+        .judgment.violation { background: #f44336; color: white; }
+        .judgment.false { background: #4caf50; color: white; }
+        .judgment.unclear { background: #ff9800; color: white; }
+        .reason { background: #f9f9f9; padding: 12px; border-radius: 6px; font-size: 14px; color: #555; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI 審核結果報告</h1>
+            <p style="color: #666;">審核日期: 2026-04-10 | 審核案例: 前 10 個</p>
+            <div class="stats">
+                <div class="stat-box violation">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">🚨 真實違規</div>
+                </div>
+                <div class="stat-box false">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">✓ 誤判</div>
+                </div>
+                <div class="stat-box unclear">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">⚠ 需複審</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cases">
+            <div class="case unclear">
+                <img src="temp_images/case_1030290.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030290</span>
+                        <span class="case-time">15:36:38</span>
+                    </div>
+                    <div class="case-type">📋 掛鉤未確實掛於施工架上</div>
+                    <span class="judgment unclear">⚠ 需複審</span>
+                    <div class="reason">俯視角度，無法清楚看到掛鉤連接狀態</div>
+                </div>
+            </div>
+
+            <div class="case false">
+                <img src="temp_images/case_1030288.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030288</span>
+                        <span class="case-time">15:36:30</span>
+                    </div>
+                    <div class="case-type">📋 人員無穿戴安全帶</div>
+                    <span class="judgment false">✓ 誤判</span>
+                    <div class="reason">人員在地面，不在高處作業區域</div>
+                </div>
+            </div>
+
+            <div class="case false">
+                <img src="temp_images/case_1030287.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030287</span>
+                        <span class="case-time">15:36:27</span>
+                    </div>
+                    <div class="case-type">📋 掛鉤未確實掛於施工架上</div>
+                    <span class="judgment false">✓ 誤判</span>
+                    <div class="reason">偵測框在地面邊緣，無高處作業場景</div>
+                </div>
+            </div>
+
+            <div class="case unclear">
+                <img src="temp_images/case_1030284.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030284</span>
+                        <span class="case-time">15:36:04</span>
+                    </div>
+                    <div class="case-type">📋 掛鉤未確實掛於施工架上</div>
+                    <span class="judgment unclear">⚠ 需複審</span>
+                    <div class="reason">攝影機距離太遠，無法確認</div>
+                </div>
+            </div>
+
+            <div class="case unclear">
+                <img src="temp_images/case_1030278.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030278</span>
+                        <span class="case-time">15:35:40</span>
+                    </div>
+                    <div class="case-type">📋 掛鉤未確實掛於施工架上</div>
+                    <span class="judgment unclear">⚠ 需複審</span>
+                    <div class="reason">攝影機距離太遠</div>
+                </div>
+            </div>
+
+            <div class="case false">
+                <img src="temp_images/case_1030274.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030274</span>
+                        <span class="case-time">15:35:29</span>
+                    </div>
+                    <div class="case-type">📋 人員無穿戴安全帶</div>
+                    <span class="judgment false">✓ 誤判</span>
+                    <div class="reason">偵測框在鷹架外側，非高處作業人員</div>
+                </div>
+            </div>
+
+            <div class="case false">
+                <img src="temp_images/case_1030269.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030269</span>
+                        <span class="case-time">15:35:07</span>
+                    </div>
+                    <div class="case-type">📋 人員無穿戴安全帶</div>
+                    <span class="judgment false">✓ 誤判</span>
+                    <div class="reason">地面工作人員（穿紫色工作服）</div>
+                </div>
+            </div>
+
+            <div class="case unclear">
+                <img src="temp_images/case_1030270.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030270</span>
+                        <span class="case-time">15:35:07</span>
+                    </div>
+                    <div class="case-type">📋 掛鉤未確實掛於施工架上</div>
+                    <span class="judgment unclear">⚠ 需複審</span>
+                    <div class="reason">距離太遠，建議人工確認</div>
+                </div>
+            </div>
+
+            <div class="case false">
+                <img src="temp_images/case_1030255.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030255</span>
+                        <span class="case-time">15:34:24</span>
+                    </div>
+                    <div class="case-type">📋 人員無穿戴安全帶</div>
+                    <span class="judgment false">✓ 誤判</span>
+                    <div class="reason">偵測框位置不正確</div>
+                </div>
+            </div>
+
+            <div class="case unclear">
+                <img src="temp_images/case_1030251.jpg" class="case-image">
+                <div class="case-body">
+                    <div class="case-header">
+                        <span class="case-id">ID: 1030251</span>
+                        <span class="case-time">15:34:13</span>
+                    </div>
+                    <div class="case-type">📋 掛鉤未確實掛於施工架上</div>
+                    <span class="judgment unclear">⚠ 需複審</span>
+                    <div class="reason">距離太遠無法確認</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -9,7 +9,7 @@ import urllib.request
 from pathlib import Path
 from datetime import datetime
 
-API_BASE = 'http://192.168.53.96:8001/api/v1'
+API_BASE = 'http://localhost:8000/api/v1'
 
 # 要匯入的 CSV 檔案
 CSV_FILES = [

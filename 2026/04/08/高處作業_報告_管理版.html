@@ -361,6 +361,21 @@
     <main class="main">
         <div class="grid" id="grid">
         </div>
+
+        <!-- 備註區塊 -->
+        <div style="margin-top:32px;padding:20px;background:#ECFDF5;border:1px solid #10B981;border-radius:12px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" style="flex-shrink:0;margin-top:2px;">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div>
+                    <div style="font-weight:600;color:#065F46;margin-bottom:4px;">備註</div>
+                    <div style="color:#047857;font-size:14px;line-height:1.6;">
+                        提供部分符合規範的影片供參閱，該包商嚴格遵守規範，無明確違規事件。
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <div class="modal-overlay" id="modal" onclick="closeModal(event)">
@@ -405,10 +420,55 @@
                     render();
                 }
             } else {
-                // 預設顯示無違規紀錄
-                document.getElementById('grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#10B981;font-size:18px;font-weight:600;">無違規紀錄</div>';
-                document.getElementById('total-count').textContent = '0';
+                // 預設顯示無違規紀錄 + 合規影片
+                showNoViolationWithVideos();
             }
+        }
+
+        function showNoViolationWithVideos() {
+            document.getElementById('total-count').textContent = '0';
+            document.getElementById('grid').innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:40px;color:#10B981;font-size:18px;font-weight:600;">
+                    無違規紀錄
+                </div>
+                <div style="grid-column:1/-1;margin-top:20px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#374151;margin-bottom:16px;text-align:center;">
+                        符合規定影片紀錄
+                    </h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+                        <div class="video-card" style="background:white;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+                            <video controls style="width:100%;aspect-ratio:16/9;background:#000;">
+                                <source src="videos/758_高處_102647640.mp4" type="video/mp4">
+                            </video>
+                            <div style="padding:12px;font-size:13px;color:#64748B;">10:26:47 - 施工人員符合安全規範</div>
+                        </div>
+                        <div class="video-card" style="background:white;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+                            <video controls style="width:100%;aspect-ratio:16/9;background:#000;">
+                                <source src="videos/758_高處_102320090.mp4" type="video/mp4">
+                            </video>
+                            <div style="padding:12px;font-size:13px;color:#64748B;">10:23:20 - 施工人員符合安全規範</div>
+                        </div>
+                        <div class="video-card" style="background:white;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+                            <video controls style="width:100%;aspect-ratio:16/9;background:#000;">
+                                <source src="videos/758_高處_102309233.mp4" type="video/mp4">
+                            </video>
+                            <div style="padding:12px;font-size:13px;color:#64748B;">10:23:09 - 施工人員符合安全規範</div>
+                        </div>
+                        <div class="video-card" style="background:white;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+                            <video controls style="width:100%;aspect-ratio:16/9;background:#000;">
+                                <source src="videos/758_高處_101607137.mp4" type="video/mp4">
+                            </video>
+                            <div style="padding:12px;font-size:13px;color:#64748B;">10:16:07 - 施工人員符合安全規範</div>
+                        </div>
+                        <div class="video-card" style="background:white;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+                            <video controls style="width:100%;aspect-ratio:16/9;background:#000;">
+                                <source src="videos/758_高處_101554188.mp4" type="video/mp4">
+                            </video>
+                            <div style="padding:12px;font-size:13px;color:#64748B;">10:15:54 - 施工人員符合安全規範</div>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function cleanMesg(mesg) {

@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高處A 違規審核 - 2026-04-13</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #0F172A;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --accent-blue: #3B82F6;
+            --border-color: #E2E8F0;
+            --bg-light: #F8FAFC;
+            --success: #10B981;
+            --success-bg: #ECFDF5;
+            --error: #EF4444;
+            --error-bg: #FEF2F2;
+            --warning: #F59E0B;
+            --warning-bg: #FFFBEB;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: var(--text-dark);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: #FFFFFF;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .header-title .highlight {
+            color: var(--accent-blue);
+        }
+        .header-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .meta-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--border-color);
+        }
+
+        .stats-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-light);
+        }
+        .stat-box.pending { background: var(--warning-bg); }
+        .stat-box.success { background: var(--success-bg); }
+        .stat-box.error { background: var(--error-bg); }
+        .stat-num {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .stat-box.pending .stat-num { color: var(--warning); }
+        .stat-box.success .stat-num { color: var(--success); }
+        .stat-box.error .stat-num { color: var(--error); }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-dark {
+            background: var(--text-dark);
+            color: white;
+        }
+        .btn-dark:hover {
+            background: #1E293B;
+        }
+        .btn-outline {
+            background: white;
+            color: var(--text-dark);
+            border: 1.5px solid var(--border-color);
+        }
+        .btn-outline:hover {
+            border-color: var(--text-secondary);
+            background: var(--bg-light);
+        }
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+        .btn-confirm {
+            background: white;
+            color: var(--success);
+            border: 1.5px solid var(--success);
+        }
+        .btn-confirm:hover {
+            background: var(--success-bg);
+        }
+        .btn-confirm.confirmed {
+            background: var(--success);
+            color: white;
+        }
+        .btn-delete {
+            background: white;
+            color: var(--error);
+            border: 1.5px solid var(--error);
+        }
+        .btn-delete:hover {
+            background: var(--error-bg);
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+            padding-top: 100px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+        .card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+            transform: translateY(-4px);
+        }
+        .card.removing {
+            animation: fadeOut 0.3s ease forwards;
+        }
+        .card.confirmed {
+            border-color: var(--success);
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.96); }
+        }
+
+        .card-media {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: #0F172A;
+            overflow: hidden;
+        }
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .card:hover .card-media img {
+            transform: scale(1.05);
+        }
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-dark);
+            margin-left: 4px;
+        }
+        .confirmed-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: none;
+        }
+        .card.confirmed .confirmed-badge {
+            display: block;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+        .card-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--warning-bg);
+            color: var(--warning);
+            word-break: keep-all;
+        }
+        .card-info {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .card-note {
+            margin-bottom: 12px;
+        }
+        .note-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            background: var(--bg-light);
+            transition: border-color 0.2s;
+        }
+        .note-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: #fff;
+        }
+        .note-input::placeholder {
+            color: var(--text-muted);
+        }
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .card-actions .btn {
+            flex: 1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 32px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: var(--bg-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .modal-video {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            background: #000;
+            min-height: 300px;
+        }
+        .modal-video::-webkit-media-controls-panel {
+            background: linear-gradient(transparent, rgba(0,0,0,0.7)) !important;
+        }
+        .modal-info {
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-color);
+        }
+        .modal-actions .btn {
+            flex: 1;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .confirm-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .confirm-item-thumb {
+            width: 80px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .confirm-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .confirm-item-mesg {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .confirm-item-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .confirm-item-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+        .confirm-item-remove:hover {
+            background: var(--error-bg);
+            color: var(--error);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+    </style>
+    <script>
+        if (sessionStorage.getItem('reviewAuth') !== 'true') {
+            const pwd = prompt('請輸入審核密碼：');
+            if (pwd !== 'cpc2026') {
+                alert('密碼錯誤');
+                window.location.href = '../../../index.html';
+            } else {
+                sessionStorage.setItem('reviewAuth', 'true');
+            }
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="header-title">
+                    <span class="highlight">高處A</span> 違規審核
+                </div>
+                <div class="header-meta">
+                    <span>2026-04-13</span>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-box pending">
+                    <span class="stat-num" id="pending-count">41</span>
+                    <span class="stat-label">待審核</span>
+                </div>
+                <div class="stat-box success">
+                    <span class="stat-num" id="confirmed-count">0</span>
+                    <span class="stat-label">已確認</span>
+                </div>
+                <div class="stat-box error">
+                    <span class="stat-num" id="deleted-count">0</span>
+                    <span class="stat-label">已刪除</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-outline" onclick="window.location.href='../../../index.html'">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    返回列表
+                </button>
+                <button class="btn btn-dark" onclick="generateReport()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    偵測報告
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="grid" id="grid">
+            <div class="card" data-id="1037334" id="card-1037334">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1370414_153142171.jpg" alt="預覽圖" id="thumb-1037334">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_153142186.mp4" id="video-1037334" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1037334)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:0</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:31:42</span>
+                        <span>ID: 0</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1037334" placeholder="備註..." onchange="saveNote(1037334, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1037334" onclick="confirmCard(1037334)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1037334)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1037113" id="card-1037113">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1368006_151941403.jpg" alt="預覽圖" id="thumb-1037113">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151941414.mp4" id="video-1037113" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1037113)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:12</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:19:41</span>
+                        <span>ID: 12</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1037113" placeholder="備註..." onchange="saveNote(1037113, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1037113" onclick="confirmCard(1037113)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1037113)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1037051" id="card-1037051">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1367556_151720266.jpg" alt="預覽圖" id="thumb-1037051">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151720282.mp4" id="video-1037051" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1037051)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:29, ID:12</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:17:20</span>
+                        <span>ID: 29, 12</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1037051" placeholder="備註..." onchange="saveNote(1037051, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1037051" onclick="confirmCard(1037051)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1037051)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1037033" id="card-1037033">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1367410_151636254.jpg" alt="預覽圖" id="thumb-1037033">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151636268.mp4" id="video-1037033" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1037033)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:26, ID:12</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:16:36</span>
+                        <span>ID: 26, 12</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1037033" placeholder="備註..." onchange="saveNote(1037033, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1037033" onclick="confirmCard(1037033)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1037033)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036997" id="card-1036997">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1367022_151441007.jpg" alt="預覽圖" id="thumb-1036997">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151441020.mp4" id="video-1036997" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036997)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:12, ID:20</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:14:40</span>
+                        <span>ID: 12, 20</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036997" placeholder="備註..." onchange="saveNote(1036997, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036997" onclick="confirmCard(1036997)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036997)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036955" id="card-1036955">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1366616_151240878.jpg" alt="預覽圖" id="thumb-1036955">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151240891.mp4" id="video-1036955" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036955)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:12, ID:13</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:12:40</span>
+                        <span>ID: 12, 13</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036955" placeholder="備註..." onchange="saveNote(1036955, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036955" onclick="confirmCard(1036955)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036955)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036913" id="card-1036913">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1366252_151051360.jpg" alt="預覽圖" id="thumb-1036913">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151051379.mp4" id="video-1036913" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036913)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:12, ID:0</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:10:51</span>
+                        <span>ID: 12, 0</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036913" placeholder="備註..." onchange="saveNote(1036913, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036913" onclick="confirmCard(1036913)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036913)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036855" id="card-1036855">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1365728_150818095.jpg" alt="預覽圖" id="thumb-1036855">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_150818109.mp4" id="video-1036855" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036855)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:7</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:08:18</span>
+                        <span>ID: 7</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036855" placeholder="備註..." onchange="saveNote(1036855, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036855" onclick="confirmCard(1036855)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036855)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036852" id="card-1036852">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1365702_150807830.jpg" alt="預覽圖" id="thumb-1036852">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_150807840.mp4" id="video-1036852" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036852)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:5, ID:0</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>15:08:07</span>
+                        <span>ID: 5, 0</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036852" placeholder="備註..." onchange="saveNote(1036852, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036852" onclick="confirmCard(1036852)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036852)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036672" id="card-1036672">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362929_145414003.jpg" alt="預覽圖" id="thumb-1036672">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145414018.mp4" id="video-1036672" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036672)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:5</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:54:13</span>
+                        <span>ID: 5</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036672" placeholder="備註..." onchange="saveNote(1036672, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036672" onclick="confirmCard(1036672)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036672)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036669" id="card-1036669">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362887_145403614.jpg" alt="預覽圖" id="thumb-1036669">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145403627.mp4" id="video-1036669" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036669)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:4, ID:0</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:54:03</span>
+                        <span>ID: 4, 0</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036669" placeholder="備註..." onchange="saveNote(1036669, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036669" onclick="confirmCard(1036669)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036669)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036635" id="card-1036635">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362411_145141372.jpg" alt="預覽圖" id="thumb-1036635">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145141385.mp4" id="video-1036635" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036635)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:2, ID:0</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:51:41</span>
+                        <span>ID: 2, 0</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036635" placeholder="備註..." onchange="saveNote(1036635, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036635" onclick="confirmCard(1036635)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036635)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036612" id="card-1036612">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362048_145020798.jpg" alt="預覽圖" id="thumb-1036612">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145020812.mp4" id="video-1036612" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036612)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:150</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:49:50</span>
+                        <span>ID: 150</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036612" placeholder="備註..." onchange="saveNote(1036612, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036612" onclick="confirmCard(1036612)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036612)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036585" id="card-1036585">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361596_144735024.jpg" alt="預覽圖" id="thumb-1036585">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144735037.mp4" id="video-1036585" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036585)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:151</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:47:34</span>
+                        <span>ID: 151</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036585" placeholder="備註..." onchange="saveNote(1036585, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036585" onclick="confirmCard(1036585)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036585)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036562" id="card-1036562">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361304_144608852.jpg" alt="預覽圖" id="thumb-1036562">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144608870.mp4" id="video-1036562" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036562)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:149</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:46:04</span>
+                        <span>ID: 149</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036562" placeholder="備註..." onchange="saveNote(1036562, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036562" onclick="confirmCard(1036562)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036562)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036559" id="card-1036559">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361252_144552936.jpg" alt="預覽圖" id="thumb-1036559">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144552951.mp4" id="video-1036559" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036559)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:146</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:45:52</span>
+                        <span>ID: 146</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036559" placeholder="備註..." onchange="saveNote(1036559, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036559" onclick="confirmCard(1036559)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036559)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036556" id="card-1036556">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361214_144540804.jpg" alt="預覽圖" id="thumb-1036556">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144540818.mp4" id="video-1036556" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036556)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:147, ID:146, ID:148</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:45:40</span>
+                        <span>ID: 147, 146, 148</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036556" placeholder="備註..." onchange="saveNote(1036556, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036556" onclick="confirmCard(1036556)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036556)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036553" id="card-1036553">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361174_144530236.jpg" alt="預覽圖" id="thumb-1036553">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144530250.mp4" id="video-1036553" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036553)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:147, ID:146</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:45:30</span>
+                        <span>ID: 147, 146</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036553" placeholder="備註..." onchange="saveNote(1036553, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036553" onclick="confirmCard(1036553)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036553)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036541" id="card-1036541">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361036_144447315.jpg" alt="預覽圖" id="thumb-1036541">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144447332.mp4" id="video-1036541" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036541)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:145</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:44:47</span>
+                        <span>ID: 145</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036541" placeholder="備註..." onchange="saveNote(1036541, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036541" onclick="confirmCard(1036541)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036541)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036538" id="card-1036538">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361020_144436716.jpg" alt="預覽圖" id="thumb-1036538">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144436728.mp4" id="video-1036538" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036538)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:145, ID:100, ID:144</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:44:36</span>
+                        <span>ID: 145, 100, 144</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036538" placeholder="備註..." onchange="saveNote(1036538, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036538" onclick="confirmCard(1036538)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036538)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036535" id="card-1036535">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1360982_144426334.jpg" alt="預覽圖" id="thumb-1036535">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144426348.mp4" id="video-1036535" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036535)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:100</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:44:26</span>
+                        <span>ID: 100</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036535" placeholder="備註..." onchange="saveNote(1036535, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036535" onclick="confirmCard(1036535)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036535)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036406" id="card-1036406">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1359236_143542764.jpg" alt="預覽圖" id="thumb-1036406">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_143542775.mp4" id="video-1036406" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036406)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:143, ID:100</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:35:42</span>
+                        <span>ID: 143, 100</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036406" placeholder="備註..." onchange="saveNote(1036406, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036406" onclick="confirmCard(1036406)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036406)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036250" id="card-1036250">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1357458_142651528.jpg" alt="預覽圖" id="thumb-1036250">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142651541.mp4" id="video-1036250" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036250)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:133, ID:100</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:26:51</span>
+                        <span>ID: 133, 100</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036250" placeholder="備註..." onchange="saveNote(1036250, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036250" onclick="confirmCard(1036250)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036250)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036228" id="card-1036228">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1357158_142525377.jpg" alt="預覽圖" id="thumb-1036228">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142525392.mp4" id="video-1036228" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036228)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:132, ID:100</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:25:25</span>
+                        <span>ID: 132, 100</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036228" placeholder="備註..." onchange="saveNote(1036228, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036228" onclick="confirmCard(1036228)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036228)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036207" id="card-1036207">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1356920_142408564.jpg" alt="預覽圖" id="thumb-1036207">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142408578.mp4" id="video-1036207" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036207)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:129, ID:100</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:24:08</span>
+                        <span>ID: 129, 100</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036207" placeholder="備註..." onchange="saveNote(1036207, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036207" onclick="confirmCard(1036207)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036207)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036192" id="card-1036192">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1356798_142335398.jpg" alt="預覽圖" id="thumb-1036192">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142335413.mp4" id="video-1036192" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036192)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:127, ID:100, ID:126</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:23:35</span>
+                        <span>ID: 127, 100, 126</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036192" placeholder="備註..." onchange="saveNote(1036192, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036192" onclick="confirmCard(1036192)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036192)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036181" id="card-1036181">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1356692_142304319.jpg" alt="預覽圖" id="thumb-1036181">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142304332.mp4" id="video-1036181" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036181)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:126</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:23:04</span>
+                        <span>ID: 126</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036181" placeholder="備註..." onchange="saveNote(1036181, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036181" onclick="confirmCard(1036181)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036181)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036112" id="card-1036112">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1355824_141841828.jpg" alt="預覽圖" id="thumb-1036112">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141841839.mp4" id="video-1036112" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036112)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:100, ID:124</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:18:41</span>
+                        <span>ID: 100, 124</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036112" placeholder="備註..." onchange="saveNote(1036112, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036112" onclick="confirmCard(1036112)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036112)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1036102" id="card-1036102">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1355670_141758802.jpg" alt="預覽圖" id="thumb-1036102">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141758820.mp4" id="video-1036102" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1036102)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:123</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:17:58</span>
+                        <span>ID: 123</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1036102" placeholder="備註..." onchange="saveNote(1036102, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1036102" onclick="confirmCard(1036102)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1036102)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035977" id="card-1035977">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354672_141255479.jpg" alt="預覽圖" id="thumb-1035977">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141255492.mp4" id="video-1035977" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035977)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:105, ID:100</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:12:55</span>
+                        <span>ID: 105, 100</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035977" placeholder="備註..." onchange="saveNote(1035977, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035977" onclick="confirmCard(1035977)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035977)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035931" id="card-1035931">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354306_141110627.jpg" alt="預覽圖" id="thumb-1035931">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141110639.mp4" id="video-1035931" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035931)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:100, ID:93</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:11:10</span>
+                        <span>ID: 100, 93</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035931" placeholder="備註..." onchange="saveNote(1035931, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035931" onclick="confirmCard(1035931)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035931)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035926" id="card-1035926">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354286_141059897.jpg" alt="預覽圖" id="thumb-1035926">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141059911.mp4" id="video-1035926" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035926)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:93</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:10:59</span>
+                        <span>ID: 93</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035926" placeholder="備註..." onchange="saveNote(1035926, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035926" onclick="confirmCard(1035926)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035926)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035893" id="card-1035893">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354094_141005735.jpg" alt="預覽圖" id="thumb-1035893">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141005747.mp4" id="video-1035893" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035893)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:34, ID:93</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:10:05</span>
+                        <span>ID: 34, 93</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035893" placeholder="備註..." onchange="saveNote(1035893, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035893" onclick="confirmCard(1035893)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035893)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035865" id="card-1035865">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1353960_140923224.jpg" alt="預覽圖" id="thumb-1035865">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_140923248.mp4" id="video-1035865" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035865)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:34</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>14:09:23</span>
+                        <span>ID: 34</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035865" placeholder="備註..." onchange="saveNote(1035865, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035865" onclick="confirmCard(1035865)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035865)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035489" id="card-1035489">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351538_135716284.jpg" alt="預覽圖" id="thumb-1035489">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135716296.mp4" id="video-1035489" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035489)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:44, ID:34</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:57:16</span>
+                        <span>ID: 44, 34</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035489" placeholder="備註..." onchange="saveNote(1035489, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035489" onclick="confirmCard(1035489)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035489)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035464" id="card-1035464">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351388_135633949.jpg" alt="預覽圖" id="thumb-1035464">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135633961.mp4" id="video-1035464" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035464)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:41, ID:38, ID:34</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:56:33</span>
+                        <span>ID: 41, 38, 34</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035464" placeholder="備註..." onchange="saveNote(1035464, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035464" onclick="confirmCard(1035464)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035464)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035449" id="card-1035449">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351332_135612165.jpg" alt="預覽圖" id="thumb-1035449">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135612178.mp4" id="video-1035449" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035449)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:38, ID:34</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:56:12</span>
+                        <span>ID: 38, 34</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035449" placeholder="備註..." onchange="saveNote(1035449, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035449" onclick="confirmCard(1035449)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035449)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035406" id="card-1035406">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351062_135456761.jpg" alt="預覽圖" id="thumb-1035406">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135456777.mp4" id="video-1035406" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035406)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:29</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:54:56</span>
+                        <span>ID: 29</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035406" placeholder="備註..." onchange="saveNote(1035406, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035406" onclick="confirmCard(1035406)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035406)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035401" id="card-1035401">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351028_135444335.jpg" alt="預覽圖" id="thumb-1035401">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135444351.mp4" id="video-1035401" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035401)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:29, ID:30, ID:32</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:54:44</span>
+                        <span>ID: 29, 30, 32</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035401" placeholder="備註..." onchange="saveNote(1035401, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035401" onclick="confirmCard(1035401)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035401)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035397" id="card-1035397">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1350994_135433807.jpg" alt="預覽圖" id="thumb-1035397">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135433820.mp4" id="video-1035397" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035397)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:4</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:54:33</span>
+                        <span>ID: 4</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035397" placeholder="備註..." onchange="saveNote(1035397, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035397" onclick="confirmCard(1035397)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035397)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-id="1035379" id="card-1035379">
+                <div class="card-media">
+                    <img src="https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1350852_135350835.jpg" alt="預覽圖" id="thumb-1035379">
+                    <video src="https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135350848.mp4" id="video-1035379" preload="none" style="display:none" loop></video>
+                    <button class="play-btn" onclick="playVideo(1035379)">
+                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="card-top">
+                        <div class="card-title">掛鉤未確實掛於施工架上 ID:4, ID:5</div>
+                        <div class="card-tag">掛鉤未確實掛於施工架上</div>
+                    </div>
+                    <div class="card-info">
+                        <span>13:53:50</span>
+                        <span>ID: 4, 5</span>
+                    </div>
+                    <div class="card-note">
+                        <input type="text" class="note-input" id="note-1035379" placeholder="備註..." onchange="saveNote(1035379, this.value)">
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-confirm" id="btn-confirm-1035379" onclick="confirmCard(1035379)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            確認違規
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteCard(1035379)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            誤報刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">違規詳情</div>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video class="modal-video" id="modal-video" controls crossorigin="anonymous" playsinline></video>
+                <div class="modal-info" id="modal-info"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-confirm" id="modal-btn-confirm" onclick="modalConfirm()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    確認違規
+                </button>
+                <button class="btn btn-delete" id="modal-btn-delete" onclick="modalDelete()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    誤報刪除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 確認列表 Modal -->
+    <div class="modal-overlay" id="confirm-modal" onclick="closeConfirmModal(event)">
+        <div class="modal" style="max-width:700px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">已確認違規列表</div>
+                <button class="modal-close" onclick="closeConfirmModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height:60vh;overflow-y:auto;">
+                <div id="confirm-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeConfirmModal()">取消</button>
+                <button class="btn btn-dark" onclick="proceedToReport()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    產生報告
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        iSeek AI 影像辨識系統 — 高處作業安全監控
+    </footer>
+
+    <script>
+        const DATA = [{"id": 1037334, "time_display": "15:31:42", "mesg": "掛鉤未確實掛於施工架上 ID:0", "type": "hooked", "person_ids": "0", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1370414_153142171.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_153142186.mp4"}, {"id": 1037113, "time_display": "15:19:41", "mesg": "掛鉤未確實掛於施工架上 ID:12", "type": "hooked", "person_ids": "12", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1368006_151941403.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151941414.mp4"}, {"id": 1037051, "time_display": "15:17:20", "mesg": "掛鉤未確實掛於施工架上 ID:29, ID:12", "type": "hooked", "person_ids": "29, 12", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1367556_151720266.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151720282.mp4"}, {"id": 1037033, "time_display": "15:16:36", "mesg": "掛鉤未確實掛於施工架上 ID:26, ID:12", "type": "hooked", "person_ids": "26, 12", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1367410_151636254.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151636268.mp4"}, {"id": 1036997, "time_display": "15:14:40", "mesg": "掛鉤未確實掛於施工架上 ID:12, ID:20", "type": "hooked", "person_ids": "12, 20", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1367022_151441007.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151441020.mp4"}, {"id": 1036955, "time_display": "15:12:40", "mesg": "掛鉤未確實掛於施工架上 ID:12, ID:13", "type": "hooked", "person_ids": "12, 13", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1366616_151240878.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151240891.mp4"}, {"id": 1036913, "time_display": "15:10:51", "mesg": "掛鉤未確實掛於施工架上 ID:12, ID:0", "type": "hooked", "person_ids": "12, 0", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1366252_151051360.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_151051379.mp4"}, {"id": 1036855, "time_display": "15:08:18", "mesg": "掛鉤未確實掛於施工架上 ID:7", "type": "hooked", "person_ids": "7", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1365728_150818095.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_150818109.mp4"}, {"id": 1036852, "time_display": "15:08:07", "mesg": "掛鉤未確實掛於施工架上 ID:5, ID:0", "type": "hooked", "person_ids": "5, 0", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1365702_150807830.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_150807840.mp4"}, {"id": 1036672, "time_display": "14:54:13", "mesg": "掛鉤未確實掛於施工架上 ID:5", "type": "hooked", "person_ids": "5", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362929_145414003.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145414018.mp4"}, {"id": 1036669, "time_display": "14:54:03", "mesg": "掛鉤未確實掛於施工架上 ID:4, ID:0", "type": "hooked", "person_ids": "4, 0", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362887_145403614.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145403627.mp4"}, {"id": 1036635, "time_display": "14:51:41", "mesg": "掛鉤未確實掛於施工架上 ID:2, ID:0", "type": "hooked", "person_ids": "2, 0", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362411_145141372.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145141385.mp4"}, {"id": 1036612, "time_display": "14:49:50", "mesg": "掛鉤未確實掛於施工架上 ID:150", "type": "hooked", "person_ids": "150", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1362048_145020798.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_145020812.mp4"}, {"id": 1036585, "time_display": "14:47:34", "mesg": "掛鉤未確實掛於施工架上 ID:151", "type": "hooked", "person_ids": "151", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361596_144735024.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144735037.mp4"}, {"id": 1036562, "time_display": "14:46:04", "mesg": "掛鉤未確實掛於施工架上 ID:149", "type": "hooked", "person_ids": "149", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361304_144608852.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144608870.mp4"}, {"id": 1036559, "time_display": "14:45:52", "mesg": "掛鉤未確實掛於施工架上 ID:146", "type": "hooked", "person_ids": "146", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361252_144552936.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144552951.mp4"}, {"id": 1036556, "time_display": "14:45:40", "mesg": "掛鉤未確實掛於施工架上 ID:147, ID:146, ID:148", "type": "hooked", "person_ids": "147, 146, 148", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361214_144540804.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144540818.mp4"}, {"id": 1036553, "time_display": "14:45:30", "mesg": "掛鉤未確實掛於施工架上 ID:147, ID:146", "type": "hooked", "person_ids": "147, 146", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361174_144530236.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144530250.mp4"}, {"id": 1036541, "time_display": "14:44:47", "mesg": "掛鉤未確實掛於施工架上 ID:145", "type": "hooked", "person_ids": "145", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361036_144447315.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144447332.mp4"}, {"id": 1036538, "time_display": "14:44:36", "mesg": "掛鉤未確實掛於施工架上 ID:145, ID:100, ID:144", "type": "hooked", "person_ids": "145, 100, 144", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1361020_144436716.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144436728.mp4"}, {"id": 1036535, "time_display": "14:44:26", "mesg": "掛鉤未確實掛於施工架上 ID:100", "type": "hooked", "person_ids": "100", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1360982_144426334.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_144426348.mp4"}, {"id": 1036406, "time_display": "14:35:42", "mesg": "掛鉤未確實掛於施工架上 ID:143, ID:100", "type": "hooked", "person_ids": "143, 100", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1359236_143542764.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_143542775.mp4"}, {"id": 1036250, "time_display": "14:26:51", "mesg": "掛鉤未確實掛於施工架上 ID:133, ID:100", "type": "hooked", "person_ids": "133, 100", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1357458_142651528.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142651541.mp4"}, {"id": 1036228, "time_display": "14:25:25", "mesg": "掛鉤未確實掛於施工架上 ID:132, ID:100", "type": "hooked", "person_ids": "132, 100", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1357158_142525377.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142525392.mp4"}, {"id": 1036207, "time_display": "14:24:08", "mesg": "掛鉤未確實掛於施工架上 ID:129, ID:100", "type": "hooked", "person_ids": "129, 100", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1356920_142408564.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142408578.mp4"}, {"id": 1036192, "time_display": "14:23:35", "mesg": "掛鉤未確實掛於施工架上 ID:127, ID:100, ID:126", "type": "hooked", "person_ids": "127, 100, 126", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1356798_142335398.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142335413.mp4"}, {"id": 1036181, "time_display": "14:23:04", "mesg": "掛鉤未確實掛於施工架上 ID:126", "type": "hooked", "person_ids": "126", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1356692_142304319.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_142304332.mp4"}, {"id": 1036112, "time_display": "14:18:41", "mesg": "掛鉤未確實掛於施工架上 ID:100, ID:124", "type": "hooked", "person_ids": "100, 124", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1355824_141841828.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141841839.mp4"}, {"id": 1036102, "time_display": "14:17:58", "mesg": "掛鉤未確實掛於施工架上 ID:123", "type": "hooked", "person_ids": "123", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1355670_141758802.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141758820.mp4"}, {"id": 1035977, "time_display": "14:12:55", "mesg": "掛鉤未確實掛於施工架上 ID:105, ID:100", "type": "hooked", "person_ids": "105, 100", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354672_141255479.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141255492.mp4"}, {"id": 1035931, "time_display": "14:11:10", "mesg": "掛鉤未確實掛於施工架上 ID:100, ID:93", "type": "hooked", "person_ids": "100, 93", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354306_141110627.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141110639.mp4"}, {"id": 1035926, "time_display": "14:10:59", "mesg": "掛鉤未確實掛於施工架上 ID:93", "type": "hooked", "person_ids": "93", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354286_141059897.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141059911.mp4"}, {"id": 1035893, "time_display": "14:10:05", "mesg": "掛鉤未確實掛於施工架上 ID:34, ID:93", "type": "hooked", "person_ids": "34, 93", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1354094_141005735.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_141005747.mp4"}, {"id": 1035865, "time_display": "14:09:23", "mesg": "掛鉤未確實掛於施工架上 ID:34", "type": "hooked", "person_ids": "34", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1353960_140923224.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_140923248.mp4"}, {"id": 1035489, "time_display": "13:57:16", "mesg": "掛鉤未確實掛於施工架上 ID:44, ID:34", "type": "hooked", "person_ids": "44, 34", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351538_135716284.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135716296.mp4"}, {"id": 1035464, "time_display": "13:56:33", "mesg": "掛鉤未確實掛於施工架上 ID:41, ID:38, ID:34", "type": "hooked", "person_ids": "41, 38, 34", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351388_135633949.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135633961.mp4"}, {"id": 1035449, "time_display": "13:56:12", "mesg": "掛鉤未確實掛於施工架上 ID:38, ID:34", "type": "hooked", "person_ids": "38, 34", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351332_135612165.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135612178.mp4"}, {"id": 1035406, "time_display": "13:54:56", "mesg": "掛鉤未確實掛於施工架上 ID:29", "type": "hooked", "person_ids": "29", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351062_135456761.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135456777.mp4"}, {"id": 1035401, "time_display": "13:54:44", "mesg": "掛鉤未確實掛於施工架上 ID:29, ID:30, ID:32", "type": "hooked", "person_ids": "29, 30, 32", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1351028_135444335.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135444351.mp4"}, {"id": 1035397, "time_display": "13:54:33", "mesg": "掛鉤未確實掛於施工架上 ID:4", "type": "hooked", "person_ids": "4", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1350994_135433807.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135433820.mp4"}, {"id": 1035379, "time_display": "13:53:50", "mesg": "掛鉤未確實掛於施工架上 ID:4, ID:5", "type": "hooked", "person_ids": "4, 5", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260413/1921685326_49_3_867_1350852_135350835.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260413/867_高處_135350848.mp4"}];
+        const DATE = '2026-04-13';
+        const CATEGORY = '高處A';
+        const REPORT_PATH = '高處A_報告_管理版.html';
+        const PRESET_TIMES = [];  // 預設確認的時間列表
+
+        let confirmedIds = new Set();
+        let deletedIds = new Set();
+        let currentModalId = null;
+        let notes = {};  // 備註資料 {id: note}
+
+        const STORAGE_KEY = 'reviewState_' + DATE + '_' + CATEGORY;
+
+        // 儲存審核狀態
+        function saveState() {
+            const state = {
+                confirmed: Array.from(confirmedIds),
+                deleted: Array.from(deletedIds),
+                notes: notes
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        // 載入審核狀態
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            let stateLoaded = false;
+
+            if (saved) {
+                const state = JSON.parse(saved);
+                // 載入確認狀態
+                if (state.confirmed && state.confirmed.length > 0) {
+                    state.confirmed.forEach(id => {
+                        confirmedIds.add(id);
+                        const card = document.getElementById('card-' + id);
+                        const btn = document.getElementById('btn-confirm-' + id);
+                        if (card && btn) {
+                            card.classList.add('confirmed');
+                            btn.classList.add('confirmed');
+                            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+                            stateLoaded = true;
+                        }
+                    });
+                }
+                // 載入刪除狀態
+                if (state.deleted && state.deleted.length > 0) {
+                    state.deleted.forEach(id => {
+                        deletedIds.add(id);
+                        const card = document.getElementById('card-' + id);
+                        if (card) {
+                            card.style.display = 'none';
+                            stateLoaded = true;
+                        }
+                    });
+                }
+                // 載入備註
+                if (state.notes) {
+                    notes = state.notes;
+                    Object.keys(notes).forEach(id => {
+                        const input = document.getElementById('note-' + id);
+                        if (input && notes[id]) {
+                            input.value = notes[id];
+                        }
+                    });
+                }
+            }
+
+            // 如果審核狀態無法匹配，檢查是否有預設確認時間
+            if (!stateLoaded && PRESET_TIMES && PRESET_TIMES.length > 0) {
+                const presetSet = new Set(PRESET_TIMES);
+
+                // 標記預設確認的項目，其餘標記為已刪除
+                DATA.forEach(d => {
+                    if (presetSet.has(d.time_display)) {
+                        confirmedIds.add(d.id);
+                        const card = document.getElementById('card-' + d.id);
+                        const btn = document.getElementById('btn-confirm-' + d.id);
+                        if (card && btn) {
+                            card.classList.add('confirmed');
+                            btn.classList.add('confirmed');
+                            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+                        }
+                    } else {
+                        deletedIds.add(d.id);
+                        const card = document.getElementById('card-' + d.id);
+                        if (card) {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+
+                // 儲存預設狀態
+                saveState();
+                console.log('已載入預設確認 ' + confirmedIds.size + ' 筆');
+                stateLoaded = true;
+            }
+
+            // 如果還是沒有，嘗試從報告資料恢復
+            if (!stateLoaded) {
+                const reportKey = 'reportData_' + DATE + '_' + CATEGORY;
+                const reportData = JSON.parse(localStorage.getItem(reportKey) || '{}');
+                if (reportData.items && reportData.items.length > 0) {
+                    // 用時間+訊息建立已確認項目的 key
+                    const confirmedKeys = new Set(reportData.items.map(item =>
+                        item.time_display + '|' + item.mesg
+                    ));
+
+                    // 標記已確認的項目，其餘標記為已刪除
+                    DATA.forEach(d => {
+                        const key = d.time_display + '|' + d.mesg;
+                        if (confirmedKeys.has(key)) {
+                            confirmedIds.add(d.id);
+                            const card = document.getElementById('card-' + d.id);
+                            const btn = document.getElementById('btn-confirm-' + d.id);
+                            if (card && btn) {
+                                card.classList.add('confirmed');
+                                btn.classList.add('confirmed');
+                                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+                            }
+                        } else {
+                            deletedIds.add(d.id);
+                            const card = document.getElementById('card-' + d.id);
+                            if (card) {
+                                card.style.display = 'none';
+                            }
+                        }
+                    });
+
+                    // 儲存恢復的狀態
+                    saveState();
+                    console.log('已從報告資料恢復 ' + confirmedIds.size + ' 筆已確認項目');
+                }
+            }
+
+            updateStats();
+        }
+
+        // 儲存備註
+        function saveNote(id, value) {
+            notes[id] = value;
+            saveState();
+        }
+
+        // 頁面載入時載入狀態
+        window.addEventListener('load', function() {
+            loadState();
+            // 如果所有項目都被刪除，自動寫入空報告數據讓報告按鈕可點擊
+            if (deletedIds.size === DATA.length && confirmedIds.size === 0) {
+                const reportData = {
+                    date: DATE,
+                    category: CATEGORY,
+                    items: []
+                };
+                localStorage.setItem('reportData_' + DATE + '_' + CATEGORY, JSON.stringify(reportData));
+            }
+        });
+
+        function updateStats() {
+            const pending = DATA.length - confirmedIds.size - deletedIds.size;
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('confirmed-count').textContent = confirmedIds.size;
+            document.getElementById('deleted-count').textContent = deletedIds.size;
+        }
+
+        function confirmCard(id) {
+            const card = document.getElementById('card-' + id);
+            const btn = document.getElementById('btn-confirm-' + id);
+            if (confirmedIds.has(id)) {
+                confirmedIds.delete(id);
+                card.classList.remove('confirmed');
+                btn.classList.remove('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 確認違規';
+            } else {
+                confirmedIds.add(id);
+                card.classList.add('confirmed');
+                btn.classList.add('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+            }
+            updateStats();
+            saveState();  // 儲存狀態
+        }
+
+        function deleteCard(id) {
+            const card = document.getElementById('card-' + id);
+            card.classList.add('removing');
+            setTimeout(() => {
+                card.style.display = 'none';
+                deletedIds.add(id);
+                confirmedIds.delete(id);
+                updateStats();
+                saveState();  // 儲存狀態
+            }, 300);
+        }
+
+        function playVideo(id) {
+            currentModalId = id;
+            const d = DATA.find(item => item.id === id);
+            const modal = document.getElementById('modal');
+            const video = document.getElementById('modal-video');
+            const title = document.getElementById('modal-title');
+            const info = document.getElementById('modal-info');
+
+            video.src = d.video_url;
+            title.textContent = d.mesg;
+            info.innerHTML = `時間：${d.time_display} | ID：${d.person_ids}`;
+
+            modal.classList.add('active');
+            video.load();
+            video.play().catch(e => console.log('Auto-play blocked:', e));
+            updateModalButtons();
+        }
+
+        function closeModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            const modal = document.getElementById('modal');
+            const video = document.getElementById('modal-video');
+            video.pause();
+            modal.classList.remove('active');
+            currentModalId = null;
+        }
+
+        function updateModalButtons() {
+            const btn = document.getElementById('modal-btn-confirm');
+            if (confirmedIds.has(currentModalId)) {
+                btn.classList.add('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已確認 ✓';
+            } else {
+                btn.classList.remove('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 確認違規';
+            }
+        }
+
+        function modalConfirm() {
+            if (currentModalId === null) return;
+            confirmCard(currentModalId);
+            updateModalButtons();
+        }
+
+        function modalDelete() {
+            if (currentModalId === null) return;
+            const idToDelete = currentModalId;
+            closeModal();
+            deleteCard(idToDelete);
+        }
+
+        function generateReport() {
+            const confirmedData = DATA.filter(d => confirmedIds.has(d.id));
+            if (confirmedData.length === 0) {
+                // 無確認違規，直接寫入空報告資料並跳轉
+                const reportData = {
+                    date: DATE,
+                    category: CATEGORY,
+                    items: []
+                };
+                localStorage.setItem('reportData_' + DATE + '_' + CATEGORY, JSON.stringify(reportData));
+                window.location.href = '高處作業_報告_管理版.html';
+                return;
+            }
+
+            // 顯示確認列表
+            showConfirmModal(confirmedData);
+        }
+
+        function cleanMesg(mesg) {
+            return mesg.replace(/\s*ID[:\s]*[\d,\s]+/gi, '').trim();
+        }
+
+        function getDisplayTag(mesg, type) {
+            const cleaned = cleanMesg(mesg);
+            if (cleaned.includes('人員未穿戴必要裝備')) {
+                const typeMap = {
+                    'heartbeat': '缺少生命偵測器',
+                    'harness': '缺少安全帶',
+                    'no_hardhat': '未戴安全帽',
+                    'no_safety_vest': '未穿安全背心'
+                };
+                if (typeMap[type]) {
+                    const idMatch = mesg.match(/ID[:\s]*(\d+)/i);
+                    let tag = typeMap[type];
+                    // 特殊處理：ID 746 顯示為「未戴安全帽」
+                    if (idMatch && idMatch[1] === '746' && type === 'heartbeat') {
+                        tag = '未戴安全帽';
+                    }
+                    return tag + (idMatch ? ` (ID:${idMatch[1]})` : '');
+                }
+            }
+            return cleaned;
+        }
+
+        function showConfirmModal(items) {
+            const list = document.getElementById('confirm-list');
+            list.innerHTML = items.map((d, idx) => `
+                <div class="confirm-item" data-id="${d.id}">
+                    <img class="confirm-item-thumb" src="${d.image_url}" onerror="this.style.display='none'">
+                    <div class="confirm-item-info">
+                        <div class="confirm-item-mesg">${cleanMesg(d.mesg)}</div>
+                        <div class="confirm-item-meta">${d.time_display} | ID: ${d.person_ids}</div>
+                    </div>
+                    <button class="confirm-item-remove" onclick="removeFromConfirm(${d.id})" title="移除">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+
+            document.getElementById('confirm-modal').classList.add('active');
+        }
+
+        function closeConfirmModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('confirm-modal').classList.remove('active');
+        }
+
+        function removeFromConfirm(id) {
+            confirmedIds.delete(id);
+            // 更新卡片狀態
+            const card = document.getElementById('card-' + id);
+            const btn = document.getElementById('btn-confirm-' + id);
+            if (card) card.classList.remove('confirmed');
+            if (btn) {
+                btn.classList.remove('confirmed');
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 確認違規';
+            }
+            updateStats();
+
+            // 從列表中移除該項目
+            const item = document.querySelector(`.confirm-item[data-id="${id}"]`);
+            if (item) item.remove();
+
+            // 若無確認項目則關閉 modal
+            if (confirmedIds.size === 0) {
+                closeConfirmModal();
+            }
+        }
+
+        function proceedToReport() {
+            const confirmedData = DATA.filter(d => confirmedIds.has(d.id)).map(d => {
+                return { ...d, note: notes[d.id] || '' };
+            });
+
+            // 儲存確認的資料到 localStorage（含備註）
+            const reportData = {
+                date: DATE,
+                category: CATEGORY,
+                items: confirmedData
+            };
+            localStorage.setItem('reportData_' + DATE + '_' + CATEGORY, JSON.stringify(reportData));
+
+            // 跳轉到報告頁面
+            window.location.href = REPORT_PATH;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeConfirmModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高處作業 偵測報告 - 2026-04-09</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #0F172A;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --accent-blue: #3B82F6;
+            --border-color: #E2E8F0;
+            --bg-light: #F8FAFC;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .header {
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .header-title .highlight {
+            color: var(--accent-blue);
+        }
+        .header-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-dark {
+            background: var(--text-dark);
+            color: white;
+        }
+        .btn-dark:hover {
+            background: #1E293B;
+        }
+        .btn-outline {
+            background: white;
+            color: var(--text-dark);
+            border: 1.5px solid var(--border-color);
+        }
+        .btn-outline:hover {
+            background: var(--bg-light);
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px 24px;
+        }
+
+        .summary {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .summary-card {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .summary-num {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: auto;
+            max-height: calc(100vh - 180px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        td {
+            font-size: 13px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: var(--bg-light);
+        }
+        .thumb {
+            width: 100px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .thumb:hover {
+            transform: scale(1.05);
+        }
+        .video-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 16px;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .export-section {
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            padding: 16px 24px;
+        }
+        .export-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .export-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            cursor: zoom-out;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .lightbox-close svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+        }
+
+        @media print {
+            .header-actions, .btn { display: none; }
+            .header { position: static; }
+            .table-container { max-height: none; overflow: visible; }
+            thead { position: static; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="header-title">
+                    <span class="highlight">高處作業</span> 偵測報告
+                </div>
+                <div class="header-meta">2026-04-09</div>
+                <div class="summary">
+                    <div class="summary-card">
+                        <span class="summary-num" id="total-count">0</span>
+                        <span class="summary-label">違規總數</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="summary-num" id="time-range" style="font-size:14px;">--</span>
+                        <span class="summary-label">偵測時段</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="window.location.href='../../../index.html'">返回列表</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="table-container">
+            <table id="report-table">
+                <thead>
+                    <tr>
+                        <th style="width:50px">序號</th>
+                        <th style="width:80px">時間</th>
+                        <th>違規事項</th>
+                        <th style="width:80px">人員 ID</th>
+                        <th style="width:120px">截圖</th>
+                        <th style="width:80px">影片</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        <img id="lightbox-img" src="" alt="放大圖片">
+    </div>
+
+    <div class="export-section" id="export-section" style="display:none;">
+        <div class="export-inner">
+            <span class="export-label">匯出報告：</span>
+            <button class="btn btn-outline" onclick="exportCSV()">CSV</button>
+            <button class="btn btn-dark" onclick="exportWord()">違規單</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        iSeek AI 影像辨識系統 | 報告產生：<span id="gen-time"></span>
+    </footer>
+
+    <script>
+        const CATEGORY = '高處作業';
+        const DATE = '2026-04-09';
+
+        let reportData = null;
+
+        function loadData() {
+            const key = 'reportData_' + DATE + '_' + CATEGORY;
+            const stored = localStorage.getItem(key);
+            if (stored) {
+                reportData = JSON.parse(stored);
+                renderTable();
+                document.getElementById('export-section').style.display = 'block';
+            } else {
+                document.getElementById('table-body').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#94A3B8;">尚無資料，請先在審核頁面確認違規項目</td></tr>';
+            }
+        }
+
+        // 清理 mesg 中的 ID（用於顯示）
+        function cleanMesg(mesg) {
+            return mesg.replace(/\s*ID[:\s]*[\d,\s]+/gi, '').trim();
+        }
+
+        function getDisplayTag(mesg, type) {
+            const cleaned = cleanMesg(mesg);
+            if (cleaned.includes('人員未穿戴必要裝備')) {
+                const typeMap = {
+                    'heartbeat': '缺少生命偵測器',
+                    'harness': '缺少安全帶',
+                    'no_hardhat': '未戴安全帽',
+                    'no_safety_vest': '未穿安全背心'
+                };
+                if (typeMap[type]) {
+                    const idMatch = mesg.match(/ID[:\s]*(\d+)/i);
+                    let tag = typeMap[type];
+                    // 特殊處理：ID 746 顯示為「未戴安全帽」
+                    if (idMatch && idMatch[1] === '746' && type === 'heartbeat') {
+                        tag = '未戴安全帽';
+                    }
+                    return tag + (idMatch ? ` (ID:${idMatch[1]})` : '');
+                }
+            }
+            return cleaned;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            const items = reportData.items;
+
+            document.getElementById('total-count').textContent = items.length;
+
+            if (items.length > 0) {
+                const times = items.map(d => d.time_display).sort();
+                document.getElementById('time-range').textContent = times[0] + ' - ' + times[times.length - 1];
+            }
+
+            tbody.innerHTML = items.map((d, idx) => {
+                const imageUrl = d.image_url || '';
+                const videoUrl = d.video_url || '';
+                const tag = getDisplayTag(d.mesg, d.type);
+                return `<tr>
+                    <td>${idx + 1}</td>
+                    <td>${d.time_display}</td>
+                    <td>${tag}</td>
+                    <td>${d.person_ids}</td>
+                    <td><img src="${imageUrl}" class="thumb" onclick="openLightbox('${imageUrl}')" onerror="this.style.display='none'"></td>
+                    <td><a href="${videoUrl}" target="_blank" class="video-link">觀看</a></td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('gen-time').textContent = new Date().toLocaleString('zh-TW');
+        }
+
+        function openLightbox(url) {
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        function exportCSV() {
+            if (!reportData) return;
+            const items = reportData.items;
+            let csv = '\uFEFF序號,日期,時間,類型,違規事項,人員ID,圖片連結,影片連結\n';
+            items.forEach((d, idx) => {
+                const tag = getDisplayTag(d.mesg, d.type);
+                csv += `${idx+1},${DATE},${d.time_display},${CATEGORY},"${tag}",${d.person_ids},${d.image_url},${d.video_url}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `偵測報告_${CATEGORY}_${DATE.replace(/-/g,'')}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function exportWord() {
+            if (!reportData) return;
+            const items = reportData.items;
+
+            // 顯示載入中
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '載入圖片中...';
+            btn.disabled = true;
+
+            // 下載所有圖片轉 base64
+            const imagePromises = items.map(async (d) => {
+                try {
+                    const response = await fetch(d.image_url);
+                    const blob = await response.blob();
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = () => resolve('');
+                        reader.readAsDataURL(blob);
+                    });
+                } catch (e) {
+                    console.log('圖片載入失敗:', d.image_url);
+                    return '';
+                }
+            });
+
+            const base64Images = await Promise.all(imagePromises);
+
+            let html = `<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>違規單 - ${CATEGORY} - ${DATE}</title>
+<style>
+@media print {
+    @page { size: A4 landscape; margin: 1cm; }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: '微軟正黑體', -apple-system, sans-serif; font-size: 16px; background: #f5f5f5; }
+.page {
+    width: 277mm; height: 190mm;
+    background: white;
+    margin: 10px auto;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+}
+.page:last-child { page-break-after: auto; }
+.header {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 12px;
+    background: #f0f0f0;
+    border: 2px solid #333;
+    margin-bottom: 20px;
+}
+.content { display: flex; gap: 30px; flex: 1; }
+.left { width: 40%; font-size: 16px; }
+.right { width: 60%; display: flex; align-items: center; justify-content: center; background: #fafafa; border: 1px solid #ddd; }
+.right img { max-width: 100%; max-height: 155mm; object-fit: contain; }
+.info-table { width: 100%; border-collapse: collapse; }
+.info-table td { padding: 12px 14px; border-bottom: 1px solid #ddd; font-size: 16px; }
+.info-table .label { font-weight: bold; background: #f0f0f0; width: 100px; font-size: 16px; }
+.info-table .value { font-size: 16px; }
+.info-table .link { font-size: 11px; color: #0066cc; word-break: break-all; }
+.print-btn {
+    position: fixed; top: 20px; right: 20px;
+    padding: 12px 24px;
+    background: #0066cc; color: white;
+    border: none; border-radius: 8px;
+    font-size: 14px; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.print-btn:hover { background: #0052a3; }
+@media print { .print-btn { display: none; } }
+</style>
+</head>
+<body>
+<button class="print-btn" onclick="window.print()">存成 PDF</button>`;
+
+            for (let i = 0; i < items.length; i++) {
+                const d = items[i];
+                const tag = getDisplayTag(d.mesg, d.type);
+                const imgSrc = base64Images[i] || d.image_url;
+                html += `
+<div class="page">
+    <div class="header">違規通報單 #${i + 1}</div>
+    <div class="content">
+        <div class="left">
+            <table class="info-table">
+                <tr><td class="label">日期</td><td class="value">${DATE}</td></tr>
+                <tr><td class="label">時間</td><td class="value">${d.time_display}</td></tr>
+                <tr><td class="label">類型</td><td class="value">${CATEGORY}</td></tr>
+                <tr><td class="label">違規事項</td><td class="value">${tag}</td></tr>
+                <tr><td class="label">人員 ID</td><td class="value">${d.person_ids}</td></tr>
+                <tr><td class="label">影片連結</td><td class="link"><a href="${d.video_url}" target="_blank">${d.video_url}</a></td></tr>
+            </table>
+        </div>
+        <div class="right">
+            ${imgSrc ? `<img src="${imgSrc}"/>` : '<div style="color:#999;">圖片載入失敗</div>'}
+        </div>
+    </div>
+</div>`;
+            }
+
+            html += '</body></html>';
+
+            // 還原按鈕
+            btn.textContent = originalText;
+            btn.disabled = false;
+
+            // 開新視窗顯示
+            const win = window.open('', '_blank');
+            win.document.write(html);
+            win.document.close();
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
