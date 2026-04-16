@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>從 CSV 導入審核結果</title>
+    <style>
+        body { font-family: 'Microsoft JhengHei'; max-width: 900px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2563EB; }
+        .file-input { background: #F1F5F9; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        input[type="file"] { margin: 10px 0; }
+        button { background: #3B82F6; color: white; border: none; padding: 14px 28px; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 10px 5px; }
+        button:hover { background: #2563EB; }
+        button:disabled { background: #CBD5E1; cursor: not-allowed; }
+        .log { background: #1E293B; color: #E2E8F0; padding: 20px; border-radius: 8px; margin: 20px 0; max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 13px; }
+        .log-success { color: #6EE7B7; }
+        .log-info { color: #93C5FD; }
+        .log-warn { color: #FCD34D; }
+        .warn { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 15px; border-radius: 6px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 從 CSV 導入審核結果</h1>
+        <p>根據您的 CSV 檔案，精確標記已確認的違規</p>
+        
+        <div class="warn">
+            ⚠️ <strong>請上傳以下 CSV 檔案：</strong><br>
+            • 偵測報告_局限空間_20260330 (3).csv<br>
+            • 偵測報告_局限空間_20260402.csv<br>
+            • 偵測報告_高處作業_20260330.csv<br>
+            • 偵測報告_高處作業_20260331.csv<br>
+            • 偵測報告_高處作業_20260401.csv<br>
+            • 偵測報告_高處作業_20260407.csv
+        </div>
+
+        <div class="file-input">
+            <label><strong>選擇 CSV 檔案：</strong></label><br>
+            <input type="file" id="csvFiles" multiple accept=".csv">
+        </div>
+
+        <button onclick="processCSV()" id="processBtn" disabled>🚀 處理 CSV 並導入</button>
+        <button onclick="clearLog()">🗑️ 清除日誌</button>
+
+        <div class="log" id="log">
+            <div class="log-info">請選擇 CSV 檔案...</div>
+        </div>
+    </div>
+
+    <script>
+        let csvData = {};
+
+        document.getElementById('csvFiles').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                document.getElementById('processBtn').disabled = false;
+                log(`已選擇 ${e.target.files.length} 個 CSV 檔案`, 'info');
+            }
+        });
+
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const classMap = { 'success': 'log-success', 'warn': 'log-warn', 'info': 'log-info' };
+            const className = classMap[type] || 'log-info';
+            const timestamp = new Date().toLocaleTimeString('zh-TW');
+            logEl.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '<div class="log-info">日誌已清除</div>';
+        }
+
+        async function processCSV() {
+            const files = document.getElementById('csvFiles').files;
+            if (files.length === 0) {
+                alert('請選擇 CSV 檔案！');
+                return;
+            }
+
+            log('開始處理 CSV 檔案...', 'info');
+            csvData = {};
+
+            // 讀取所有 CSV
+            for (let file of files) {
+                log(`讀取: ${file.name}`, 'info');
+                const text = await file.text();
+                const lines = text.split('\n').filter(l => l.trim());
+                
+                // 解析檔名取得日期和類別
+                const match = file.name.match(/(\d{8}).*?(局限空間|高處作業)/);
+                if (!match) {
+                    log(`  ⚠ 無法解析檔名: ${file.name}`, 'warn');
+                    continue;
+                }
+                
+                const dateStr = match[1]; // 20260330
+                const date = `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}`;
+                const category = match[2];
+                const key = `${date}_${category}`;
+                
+                // 解析 CSV 內容（跳過標題行）
+                const confirmedItems = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (!line.trim()) continue;
+                    
+                    // CSV 格式：序號,日期,時間,類型,違規事項,人員ID,備註,圖片連結,影片連結
+                    const parts = line.split(',');
+                    if (parts.length >= 6) {
+                        const time = parts[2];
+                        const personId = parts[5];
+                        const imageUrl = parts[7];
+                        
+                        confirmedItems.push({
+                            time: time,
+                            personId: personId,
+                            imageUrl: imageUrl
+                        });
+                    }
+                }
+                
+                csvData[key] = confirmedItems;
+                log(`  ✓ ${key}: ${confirmedItems.length} 筆確認違規`, 'success');
+            }
+
+            // 現在開始匹配並更新 localStorage
+            log('', 'info');
+            log('開始匹配審核頁面資料...', 'info');
+
+            const targets = [
+                { date: '2026-03-30', category: '局限空間', url: '2026/03/30/局限空間_審核.html' },
+                { date: '2026-03-30', category: '高處作業', url: '2026/03/30/高處作業_審核.html' },
+                { date: '2026-03-31', category: '高處作業', url: '2026/03/31/高處作業_審核.html' },
+                { date: '2026-04-01', category: '高處作業', url: '2026/04/01/高處作業_審核.html' },
+                { date: '2026-04-02', category: '局限空間', url: '2026/04/02/局限空間_審核.html' },
+                { date: '2026-04-07', category: '高處作業', url: '2026/04/07/高處作業_審核.html' }
+            ];
+
+            for (const target of targets) {
+                const key = `${target.date}_${target.category}`;
+                const csvItems = csvData[key];
+                
+                if (!csvItems) {
+                    log(`⊗ 跳過 ${key} (無CSV資料)`, 'info');
+                    continue;
+                }
+
+                log(`處理: ${key}`, 'info');
+
+                try {
+                    const response = await fetch(target.url);
+                    const html = await response.text();
+                    const dataMatch = html.match(/const DATA = (\[.*?\]);/s);
+                    
+                    if (!dataMatch) {
+                        log(`  ✗ 無法找到資料`, 'warn');
+                        continue;
+                    }
+                    
+                    const data = JSON.parse(dataMatch[1]);
+                    const confirmedIds = [];
+                    const deletedIds = [];
+                    
+                    // 匹配資料
+                    for (const item of data) {
+                        const itemTime = item.time_display;
+                        const itemPersonIds = item.person_ids;
+                        
+                        // 檢查是否在 CSV 中
+                        const found = csvItems.some(csv => {
+                            return csv.time === itemTime || 
+                                   (itemPersonIds && itemPersonIds.includes(csv.personId));
+                        });
+                        
+                        if (found) {
+                            confirmedIds.push(item.id);
+                        } else {
+                            deletedIds.push(item.id);
+                        }
+                    }
+                    
+                    // 儲存到 localStorage
+                    const reviewState = {
+                        confirmed: confirmedIds,
+                        deleted: deletedIds,
+                        notes: {}
+                    };
+                    
+                    const storageKey = `reviewState_${target.date}_${target.category}`;
+                    localStorage.setItem(storageKey, JSON.stringify(reviewState));
+                    
+                    log(`  ✓ 已確認: ${confirmedIds.length} 筆，已刪除: ${deletedIds.length} 筆`, 'success');
+                    
+                } catch (e) {
+                    log(`  ✗ 錯誤: ${e.message}`, 'warn');
+                }
+            }
+
+            log('', 'info');
+            log('======================================', 'success');
+            log('完成！審核結果已根據 CSV 匯入', 'success');
+            log('您現在可以打開審核頁面點擊「偵測報告」', 'success');
+            log('======================================', 'success');
+            
+            alert('完成！\n\n請打開審核頁面，點擊「偵測報告」按鈕生成報告。');
+        }
+    </script>
+</body>
+</html>

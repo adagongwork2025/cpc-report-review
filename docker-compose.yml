@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  cpc-alert-web:
+    image: halverneus/static-file-server:latest
+    container_name: cpc_alert_web
+    ports:
+      - "8880:8080"
+    volumes:
+      - ./html:/web:ro
+    restart: unless-stopped

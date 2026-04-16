@@ -323,6 +323,91 @@
             font-size: 13px;
         }
     </style>
+    <script>
+        // ========== 嵌入的報告資料 ==========
+        (function() {
+            const embeddedData = {
+    "date": "2026-04-07",
+    "category": "高處作業",
+    "items": [
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "10:26:06",
+                "person_ids": "223",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_7663_102606038.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_102606048.mp4",
+                "time": "2026-04-07T10:26:06.000000",
+                "id": 24
+        },
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "10:16:15",
+                "person_ids": "194",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_6681_101615448.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_101615461.mp4",
+                "time": "2026-04-07T10:16:15.000000",
+                "id": 29
+        },
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "10:00:51",
+                "person_ids": "149",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_5138_100051077.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_100051085.mp4",
+                "time": "2026-04-07T10:00:51.000000",
+                "id": 36
+        },
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "09:50:12",
+                "person_ids": "123",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_4070_095012511.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_095012522.mp4",
+                "time": "2026-04-07T09:50:12.000000",
+                "id": 40
+        },
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "09:48:30",
+                "person_ids": "122",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_3905_094830121.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_094830131.mp4",
+                "time": "2026-04-07T09:48:30.000000",
+                "id": 41
+        },
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "09:39:49",
+                "person_ids": "96",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_3034_093949147.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_093949157.mp4",
+                "time": "2026-04-07T09:39:49.000000",
+                "id": 46
+        },
+        {
+                "mesg": "掛鉤未確實掛於施工架上",
+                "type": "unknown",
+                "time_display": "09:19:07",
+                "person_ids": "27",
+                "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_964_091907853.jpg",
+                "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_091907862.mp4",
+                "time": "2026-04-07T09:19:07.000000",
+                "id": 59
+        }
+]
+};
+            const storageKey = 'reportData_2026-04-07_高處作業';
+            localStorage.setItem(storageKey, JSON.stringify(embeddedData));
+            console.log('✓ 已載入嵌入的報告資料（' + embeddedData.items.length + ' 筆）');
+        })();
+        // ====================================
+    </script>
 </head>
 <body>
     <header class="header">
@@ -390,85 +475,14 @@
         const REPORT_KEY = 'reportData_' + DATE + '_' + CATEGORY;
 
         let reportData = null;
-        // ========== 嵌入的報告資料 ==========
-        (function() {
-            const embeddedData = {"date": "2026-04-07", "category": "高處作業", "items": [{"mesg": "掛鉤未確實掛於施工架上 ID:223", "type": "hooked", "time_display": "10:26:06", "person_ids": "223", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_7663_102606038.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_102606048.mp4", "time": "2026-04-07T10:26:06.001151", "id": 24}, {"mesg": "掛鉤未確實掛於施工架上 ID:194", "type": "hooked", "time_display": "10:16:15", "person_ids": "194", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_6681_101615448.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_101615461.mp4", "time": "2026-04-07T10:16:15.412740", "id": 29}, {"mesg": "掛鉤未確實掛於施工架上 ID:149", "type": "hooked", "time_display": "10:00:51", "person_ids": "149", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_5138_100051077.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_100051085.mp4", "time": "2026-04-07T10:00:51.032188", "id": 36}, {"mesg": "掛鉤未確實掛於施工架上 ID:123", "type": "hooked", "time_display": "09:50:12", "person_ids": "123", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_4070_095012511.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_095012522.mp4", "time": "2026-04-07T09:50:12.471841", "id": 40}, {"mesg": "掛鉤未確實掛於施工架上 ID:122", "type": "hooked", "time_display": "09:48:30", "person_ids": "122", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_3905_094830121.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_094830131.mp4", "time": "2026-04-07T09:48:30.088356", "id": 41}, {"mesg": "掛鉤未確實掛於施工架上 ID:80, ID:96", "type": "hooked", "time_display": "09:39:49", "person_ids": "96", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_3034_093949147.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_093949157.mp4", "time": "2026-04-07T09:39:49.085280", "id": 46}, {"mesg": "掛鉤未確實掛於施工架上 ID:27", "type": "hooked", "time_display": "09:19:07", "person_ids": "27", "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260407/1921685396_120_0_758_964_091907853.jpg", "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260407/758_高處_091907862.mp4", "time": "2026-04-07T09:19:07.813602", "id": 59}]};
-            const storageKey = 'reportData_2026-04-07_高處作業';
-
-            // 如果 localStorage 沒有資料，使用嵌入的資料
-            if (!localStorage.getItem(storageKey)) {
-                localStorage.setItem(storageKey, JSON.stringify(embeddedData));
-                console.log('✓ 已載入嵌入的報告資料（' + embeddedData.items.length + ' 筆）');
-            }
-        })();
-        // ====================================
-
-        
-
         function loadData() {
-            // 優先從 API 載入
-            loadDataFromAPI();
-        }
-
-        async function loadDataFromAPI() {
-            try {
-                const response = await fetch(`http://192.168.53.96:8001/api/v1/reports/${DATE}/${encodeURIComponent(CATEGORY)}`);
-                const result = await response.json();
-
-                if (result.success && result.data.items && result.data.items.length > 0) {
-                    reportData = {
-                        date: result.data.date,
-                        category: result.data.category,
-                        items: result.data.items
-                    };
-                    renderReport();
-                    console.log(`✓ 從 API 載入 ${reportData.items.length} 筆已確認違規`);
-                } else {
-                    // 降級到 localStorage
-                    console.log('API 無資料，嘗試從 localStorage 載入');
-                    loadDataFromLocalStorage();
-                }
-            } catch (error) {
-                console.error('API 載入失敗:', error);
-                // 降級到 localStorage
-                loadDataFromLocalStorage();
-            }
-        }
-
-        function loadDataFromLocalStorage() {
             const stored = localStorage.getItem(REPORT_KEY);
             if (stored) {
                 reportData = JSON.parse(stored);
-                renderReport();
-                console.log('✓ 從 localStorage 載入 ' + reportData.items.length + ' 筆');
+                render();
             } else {
-                showError('無報告資料');
-            }
-        }
-
-        function renderReport() {
-            if (!reportData.items || reportData.items.length === 0) {
-                showError('無已確認的違規項目');
-                return;
-            }
-            updateSummary();
-            renderTable();
-            updateDateTime();
-        }
-
-        function showError(message) {
-            const container = document.querySelector('.report-content');
-            if (container) {
-                container.innerHTML = `
-                    <div style="padding: 60px 20px; text-align: center; color: #94A3B8;">
-                        <div style="font-size: 64px; margin-bottom: 20px;">📄</div>
-                        <div style="font-size: 18px; font-weight: 600; color: #64748B; margin-bottom: 12px;">${message}</div>
-                        <div style="font-size: 14px; color: #94A3B8; margin-bottom: 30px;">請先完成違規審核</div>
-                        <button onclick="history.back()" style="padding: 12px 24px; background: #3B82F6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
-                            返回審核頁面
-                        </button>
-                    </div>
-                `;
+                document.getElementById('grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#94A3B8;">尚無資料，請先在審核頁面確認違規項目</div>';
+                document.getElementById('total-count').textContent = '0';
             }
         }
 
@@ -652,7 +666,7 @@ body { font-family: '微軟正黑體', -apple-system, sans-serif; font-size: 16p
 .print-btn:hover { background: #0052a3; }
 @media print { .print-btn { display: none; } }
 </style>
-</head>
+    </head>
 <body>
 <button class="print-btn" onclick="window.print()">存成 PDF</button>`;
 

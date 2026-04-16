@@ -323,6 +323,51 @@
             font-size: 13px;
         }
     </style>
+    <script>
+        // ========== 嵌入的報告資料 ==========
+        (function() {
+            const embeddedData = {
+    "date": "2026-03-30",
+    "category": "局限空間",
+    "items": [
+        {
+            "mesg": "人員未穿戴必要裝備 ID:409",
+            "type": "unknown",
+            "time_display": "13:45:15",
+            "person_ids": "409",
+            "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260330/1921685334_66_1_837_1501615_134515713.jpg",
+            "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260330/837_人員_134515727.mp4",
+            "time": "2026-03-30T13:45:15.000000",
+            "id": 688647
+        },
+        {
+            "mesg": "未戴安全帽 ID: 746",
+            "type": "unknown",
+            "time_display": "14:12:38",
+            "person_ids": "746",
+            "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260330/1921685334_66_1_837_1507095_141238970.jpg",
+            "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260330/837_人員_141238984.mp4",
+            "time": "2026-03-30T14:12:38.000000",
+            "id": 689328
+        },
+        {
+            "mesg": "人員未穿戴必要裝備 ID:1208",
+            "type": "unknown",
+            "time_display": "14:40:25",
+            "person_ids": "1208",
+            "image_url": "https://apigatewayiseek.intemotech.com/vision_logic/logs/notify/image?key=/app/image/kafka_notify_images/production/20260330/1921685334_66_1_837_1512653_144025869.jpg",
+            "video_url": "https://apigatewayiseek.intemotech.com/vision_logic/video?key=/app/image/kafka_notify_videos/production/20260330/837_人員_144025883.mp4",
+            "time": "2026-03-30T14:40:25.000000",
+            "id": 689735
+        }
+    ]
+};
+            const storageKey = 'reportData_2026-03-30_局限空間';
+            localStorage.setItem(storageKey, JSON.stringify(embeddedData));
+            console.log('✓ 已載入嵌入的報告資料（' + embeddedData.items.length + ' 筆）');
+        })();
+        // ====================================
+    </script>
 </head>
 <body>
     <header class="header">
@@ -390,7 +435,6 @@
         const REPORT_KEY = 'reportData_' + DATE + '_' + CATEGORY;
 
         let reportData = null;
-
         function loadData() {
             const stored = localStorage.getItem(REPORT_KEY);
             if (stored) {
@@ -582,7 +626,7 @@ body { font-family: '微軟正黑體', -apple-system, sans-serif; font-size: 16p
 .print-btn:hover { background: #0052a3; }
 @media print { .print-btn { display: none; } }
 </style>
-</head>
+    </head>
 <body>
 <button class="print-btn" onclick="window.print()">存成 PDF</button>`;
 
